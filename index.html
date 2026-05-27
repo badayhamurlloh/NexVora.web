@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexVora Portal | Premium Server</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>MENYAMBUNGKAN KE NEXVORA...</p>
+    </div>
+
+    <div class="container" id="main-content" style="display:none;">
+        <header class="header animate-fade">
+            <h1>NEXVORA</h1>
+            <p class="tagline">Official Minecraft Server Indonesia</p>
+        </header>
+
+        <div class="glass-card animate-slide">
+            <span class="label">SERVER ADDRESS</span>
+            <h2 id="ip-address">nexvora.minecraftindonesial.my.id</h2>
+            <button class="btn-copy" onclick="copyIP()">SALIN ALAMAT</button>
+            
+            <div class="status-indicator">
+                <div id="dot" class="dot-offline"></div>
+                <span id="status-text">Mengecek Server...</span>
+            </div>
+            <div id="player-list-container" class="player-list"></div>
+        </div>
+
+        <div class="glass-card animate-slide" style="animation-delay: 0.2s;">
+            <h3 class="title-icon">📜 PERATURAN SERVER</h3>
+            <ul class="rules">
+                <li><span>1</span> Dilarang menggunakan Cheat/Client Ilegal.</li>
+                <li><span>2</span> Dilarang Toxic, SARA, atau Provokasi.</li>
+                <li><span>3</span> Dilarang merusak (Griefing) karya orang lain.</li>
+                <li><span>4</span> Hargai seluruh staff dan sesama pemain.</li>
+            </ul>
+        </div>
+
+        <div class="social-grid animate-slide" style="animation-delay: 0.4s;">
+            <a href="https://discord.gg/5eYT99scd" class="social-item ds">Discord</a>
+            <a href="https://chat.whatsapp.com/BVV3nTeLFKf8AMNUQQLIku" class="social-item wa">WhatsApp</a>
+            <a href="https://tiktok.com/@nexvora.m" class="social-item tt">TikTok</a>
+        </div>
+
+        <footer class="footer-btns animate-slide" style="animation-delay: 0.6s;">
+            <a href="https://wa.me/6287816511155" class="btn-action help">HUBUNGI ADMIN</a>
+            <a href="https://wa.me/628131431367" class="btn-action whitelist">DAFTAR WHITELIST</a>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
