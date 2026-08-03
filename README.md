@@ -1,2 +1,1 @@
-# NexVora.web
-Website resmi untuk server Minecraft NexVora
+# 9D
