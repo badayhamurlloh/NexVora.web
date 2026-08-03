@@ -1,17 +1,587 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IX D — Kelas Kompak, Kelas Hebat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF6EA;
+    --paper-line:#E3D9BF;
+    --board:#173229;
+    --board-2:#0F241C;
+    --chalk:#F4F1E6;
+    --ink:#22303C;
+    --senin:#3A6EA5;
+    --selasa:#E4572E;
+    --rabu:#D9558C;
+    --kamis:#2A9D8F;
+    --jumat:#7B5EA7;
+    --gold:#F2B705;
+    --shadow: 0 10px 30px rgba(15,36,28,0.15);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    line-height:1.6;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.05), transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(255,255,255,0.06), transparent 45%),
+      linear-gradient(160deg, var(--board), var(--board-2));
+    color:var(--chalk);
+    padding:64px 24px 88px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:14px;
+    background:repeating-linear-gradient(90deg, rgba(244,241,230,0.35) 0 10px, transparent 10px 22px);
+    opacity:0.5;
+  }
+  .eyebrow{
+    font-family:'Caveat', cursive;
+    font-size:1.4rem;
+    letter-spacing:1px;
+    color:var(--gold);
+    margin:0 0 4px;
+  }
+  .hero h1{
+    font-family:'Fredoka', sans-serif;
+    font-size:clamp(3.2rem, 10vw, 6rem);
+    margin:0;
+    letter-spacing:2px;
+    text-shadow: 0 0 18px rgba(242,183,5,0.15);
+  }
+  .hero p.tagline{
+    font-size:1.1rem;
+    max-width:520px;
+    margin:14px auto 0;
+    color:#D8E3DA;
+  }
+  .chalk-underline{
+    display:inline-block;
+    width:120px; height:6px;
+    margin-top:18px;
+    border-radius:4px;
+    background:linear-gradient(90deg, var(--senin), var(--selasa), var(--rabu), var(--kamis), var(--jumat));
+  }
+
+  /* ---------- MAIN NAV ---------- */
+  .tabs-main{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:-32px auto 0;
+    position:relative;
+    z-index:5;
+    max-width:640px;
+    padding:0 16px;
+  }
+  .tabs-main button{
+    font-family:'Fredoka', sans-serif;
+    font-size:1rem;
+    padding:14px 26px;
+    border:none;
+    border-radius:14px;
+    background:var(--chalk);
+    color:var(--ink);
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .tabs-main button:hover{ transform:translateY(-2px); }
+  .tabs-main button.active{
+    background:var(--ink);
+    color:var(--chalk);
+  }
+
+  main{ max-width:960px; margin:0 auto; padding:56px 20px 20px; }
+
+  section.page{ display:none; animation:fadeIn .35s ease; }
+  section.page.visible{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+
+  h2.section-title{
+    font-family:'Fredoka', sans-serif;
+    font-size:2rem;
+    text-align:center;
+    margin-bottom:8px;
+  }
+  p.section-sub{
+    text-align:center;
+    color:#5b6b64;
+    margin-top:0;
+    margin-bottom:32px;
+  }
+
+  /* ---------- JADWAL ---------- */
+  .day-tabs{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:28px;
+  }
+  .day-tabs button{
+    font-family:'Fredoka', sans-serif;
+    border:none;
+    padding:10px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:0.95rem;
+    color:#fff;
+    opacity:0.55;
+    transition:opacity .2s ease, transform .15s ease;
+  }
+  .day-tabs button:hover{ transform:translateY(-2px); }
+  .day-tabs button.active{ opacity:1; box-shadow:var(--shadow); }
+  .day-tabs button[data-day="Senin"]{ background:var(--senin); }
+  .day-tabs button[data-day="Selasa"]{ background:var(--selasa); }
+  .day-tabs button[data-day="Rabu"]{ background:var(--rabu); }
+  .day-tabs button[data-day="Kamis"]{ background:var(--kamis); }
+  .day-tabs button[data-day="Jumat"]{ background:var(--jumat); }
+
+  .notebook-page{
+    background:#fff;
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    padding:36px 40px;
+    position:relative;
+    border-left:10px solid var(--dayColor, var(--senin));
+    background-image:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 41px,
+      var(--paper-line) 42px
+    );
+  }
+  .notebook-page h3{
+    font-family:'Fredoka', sans-serif;
+    margin-top:0;
+    color:var(--dayColor, var(--senin));
+    font-size:1.5rem;
+  }
+  .notebook-page ol{
+    margin:0;
+    padding-left:22px;
+  }
+  .notebook-page li{
+    padding:6px 0;
+    font-size:1.08rem;
+    font-weight:700;
+  }
+  .notebook-page li::marker{
+    font-family:'Fredoka', sans-serif;
+    color:var(--dayColor, var(--senin));
+  }
+
+  /* ---------- BUKU CERITA ---------- */
+  .bookshelf{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+    gap:20px;
+  }
+  .book{
+    cursor:pointer;
+    border-radius:10px 10px 4px 4px;
+    padding:20px 14px;
+    color:#fff;
+    min-height:200px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow: inset -6px 0 0 rgba(0,0,0,0.15), var(--shadow);
+    transition:transform .18s ease, box-shadow .18s ease;
+    position:relative;
+    border:none;
+    text-align:left;
+    font-family:inherit;
+  }
+  .book:hover{ transform:translateY(-6px) rotate(-1deg); }
+  .book .num{
+    font-family:'Caveat', cursive;
+    font-size:1.4rem;
+    opacity:0.85;
+  }
+  .book .title{
+    font-family:'Fredoka', sans-serif;
+    font-size:1.05rem;
+    line-height:1.25;
+  }
+  .book .hint{
+    font-size:0.8rem;
+    opacity:0.85;
+  }
+
+  /* ---------- MODAL ---------- */
+  .modal{
+    position:fixed; inset:0;
+    background:rgba(15,36,28,0.55);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    z-index:50;
+  }
+  .modal.hidden{ display:none; }
+  .modal-content{
+    background:var(--paper);
+    max-width:680px;
+    width:100%;
+    max-height:85vh;
+    overflow-y:auto;
+    border-radius:16px;
+    padding:36px 40px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.35);
+    position:relative;
+  }
+  .close-btn{
+    position:sticky;
+    top:0; left:100%;
+    transform:translate(10px,-10px);
+    background:var(--ink);
+    color:var(--chalk);
+    border:none;
+    width:36px; height:36px;
+    border-radius:50%;
+    font-size:1.2rem;
+    cursor:pointer;
+    float:right;
+  }
+  #bookTitle{
+    font-family:'Fredoka', sans-serif;
+    color:var(--ink);
+    margin-top:0;
+    clear:both;
+  }
+  #bookText p{ margin:0 0 14px; font-size:1.02rem; }
+  #bookText p:first-of-type::first-letter{
+    font-family:'Fredoka', sans-serif;
+    font-size:2.6rem;
+    float:left;
+    line-height:0.8;
+    padding-right:8px;
+    color:var(--gold);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align:center;
+    padding:40px 20px 50px;
+    background:linear-gradient(180deg, transparent, var(--board));
+    color:var(--chalk);
+    margin-top:60px;
+  }
+  footer .credit{
+    font-family:'Caveat', cursive;
+    font-size:1.6rem;
+    color:var(--gold);
+  }
+  footer small{ display:block; opacity:0.6; margin-top:4px; }
+
+  @media (max-width:560px){
+    .notebook-page{ padding:26px 20px; }
+    .modal-content{ padding:26px 22px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    
-    <!-- Kontrol Analog & Tombol -->
-    <div id="controls">
-        <div id="joystick"></div>
-        <button id="btnLove">Berbagi Cinta</button>
+
+<header class="hero">
+  <p class="eyebrow">SMP • Tahun Ajaran 2026/2027</p>
+  <h1>IX D</h1>
+  <p class="tagline">Kelas kompak, kelas hebat. Satu papan tulis, satu semangat, sejuta cerita.</p>
+  <div class="chalk-underline"></div>
+</header>
+
+<nav class="tabs-main">
+  <button data-target="jadwal" class="active">📚 Jadwal Pelajaran</button>
+  <button data-target="cerita">📖 Buku Cerita</button>
+</nav>
+
+<main>
+
+  <section id="jadwal" class="page visible">
+    <h2 class="section-title">Jadwal Pelajaran</h2>
+    <p class="section-sub">Pilih hari untuk melihat pelajaran kelas IX D</p>
+
+    <div class="day-tabs">
+      <button data-day="Senin" class="active">Senin</button>
+      <button data-day="Selasa">Selasa</button>
+      <button data-day="Rabu">Rabu</button>
+      <button data-day="Kamis">Kamis</button>
+      <button data-day="Jumat">Jumat</button>
     </div>
-    
-    <script src="script.js"></script>
+
+    <div class="notebook-page" id="notebookPage">
+      <h3 id="dayTitle">Senin</h3>
+      <ol id="dayList"></ol>
+    </div>
+  </section>
+
+  <section id="cerita" class="page">
+    <h2 class="section-title">Buku Cerita</h2>
+    <p class="section-sub">Rak cerita rakyat &amp; dongeng kelas IX D — klik buku untuk membaca cerita lengkap</p>
+    <div class="bookshelf" id="bookshelf"></div>
+  </section>
+
+</main>
+
+<div class="modal hidden" id="bookModal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">&times;</button>
+    <h2 id="bookTitle"></h2>
+    <div id="bookText"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="credit">Dev by Baday Hamurlloh</div>
+  <small>Website Kelas IX D</small>
+</footer>
+
+<script>
+  // ---------- DATA JADWAL ----------
+  const jadwal = {
+    Senin:  { color:'var(--senin)',  subjects:['Matematika','Bahasa Indonesia','TIK'] },
+    Selasa: { color:'var(--selasa)', subjects:['Pendidikan Pancasila','Prakarya','Bahasa Indramayu','Matematika'] },
+    Rabu:   { color:'var(--rabu)',   subjects:['IPA','Pendidikan Agama Islam','Bahasa Inggris'] },
+    Kamis:  { color:'var(--kamis)',  subjects:['PJOK','Bahasa Inggris','Bahasa Indonesia','IPS'] },
+    Jumat:  { color:'var(--jumat)',  subjects:['Bimbingan Konseling (BK)','IPA','IPS'] }
+  };
+
+  const dayTitle = document.getElementById('dayTitle');
+  const dayList = document.getElementById('dayList');
+  const notebookPage = document.getElementById('notebookPage');
+
+  function renderDay(day){
+    const data = jadwal[day];
+    dayTitle.textContent = day;
+    notebookPage.style.setProperty('--dayColor', data.color);
+    dayList.innerHTML = data.subjects.map(s => `<li>${s}</li>`).join('');
+  }
+  renderDay('Senin');
+
+  document.querySelectorAll('.day-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.day-tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDay(btn.dataset.day);
+    });
+  });
+
+  // ---------- MAIN NAV ----------
+  document.querySelectorAll('.tabs-main button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tabs-main button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('section.page').forEach(s => s.classList.remove('visible'));
+      document.getElementById(btn.dataset.target).classList.add('visible');
+    });
+  });
+
+  // ---------- DATA BUKU CERITA ----------
+  const bookColors = ['var(--senin)','var(--selasa)','var(--rabu)','var(--kamis)','var(--jumat)'];
+
+  const books = [
+    {
+      title: "Si Kancil dan Buaya di Sungai",
+      text: `Di tepi hutan yang rimbun, hiduplah seekor kancil kecil yang terkenal cerdik. Suatu hari, kancil ingin sekali menyeberangi sungai besar untuk mencicipi buah-buahan manis di kebun seberang. Namun sungai itu penuh dengan buaya-buaya lapar yang selalu mengintai mangsa.
+
+Kancil berdiri di tepi sungai sambil berpikir keras. Tiba-tiba ia berteriak lantang, "Wahai para buaya! Raja hutan mengutusku untuk menghitung jumlah kalian semua, karena akan diadakan pesta besar untuk seluruh buaya di sungai ini!"
+
+Mendengar kata "pesta", para buaya pun berebut muncul ke permukaan air. "Hitung aku dulu!" seru salah satu buaya. Kancil tersenyum dalam hati. "Baiklah, agar mudah dihitung, berbarislah kalian dari tepi sini sampai ke seberang sana!"
+
+Buaya-buaya itu pun berbaris rapi membentuk jembatan hidup dari satu tepi sungai ke tepi lainnya. Dengan lincah, kancil melompat dari punggung satu buaya ke buaya lainnya sambil berpura-pura menghitung, "Satu, dua, tiga, empat..." hingga akhirnya ia sampai di seberang sungai dengan selamat.
+
+Begitu kakinya menyentuh daratan, kancil berbalik dan tertawa kecil. "Terima kasih atas jembatannya, teman-teman! Sebenarnya tidak ada pesta apa pun, aku hanya ingin menyeberang sungai." Para buaya pun geram namun tak bisa berbuat apa-apa karena kancil sudah jauh melompat ke kebun buah.
+
+Sejak hari itu, kancil semakin dikenal sebagai hewan paling cerdik di hutan, yang mampu keluar dari kesulitan dengan akal, bukan dengan kekuatan.`
+    },
+    {
+      title: "Kelinci yang Sombong dan Kura-Kura yang Sabar",
+      text: `Di sebuah padang rumput yang luas, hiduplah seekor kelinci yang sangat bangga dengan kecepatan larinya. Ia sering mengejek hewan-hewan lain yang berjalan lambat, termasuk seekor kura-kura yang tenang dan sabar.
+
+"Kau berjalan seperti siput, kura-kura! Bagaimana mungkin kau bisa mengejarku?" ejek kelinci suatu hari. Kura-kura hanya tersenyum kecil. "Kalau begitu, mari kita buktikan dengan lomba lari sampai ke pohon besar di ujung padang," jawabnya tenang.
+
+Semua hewan di padang rumput berkumpul untuk menyaksikan perlombaan itu. Begitu aba-aba dimulai, kelinci melesat secepat kilat, meninggalkan kura-kura yang berjalan pelan-pelan di belakang. Karena merasa sudah sangat unggul, kelinci memutuskan untuk beristirahat sejenak di bawah pohon rindang di tengah jalan. "Kura-kura itu pasti masih jauh di belakang," pikirnya sambil menguap.
+
+Namun karena terlalu nyaman, kelinci pun tertidur pulas. Sementara itu, kura-kura terus melangkah tanpa henti, selangkah demi selangkah, tanpa pernah berhenti untuk beristirahat.
+
+Ketika kelinci terbangun, matahari sudah mulai condong ke barat. Ia terkejut dan segera berlari secepat mungkin menuju garis akhir. Namun sesampainya di sana, ia melihat kura-kura sudah berdiri tenang di bawah pohon besar, disambut sorak-sorai para hewan lainnya.
+
+Kelinci pun tertunduk malu. Ia belajar bahwa kesombongan dan keteledoran bisa mengalahkan bakat sehebat apa pun, sementara kesabaran dan ketekunan selalu membawa hasil yang baik pada akhirnya.`
+    },
+    {
+      title: "Semut yang Rajin dan Belalang yang Malas",
+      text: `Ketika musim panas tiba, seekor semut bekerja keras setiap hari mengumpulkan biji-bijian untuk disimpan di sarangnya. Ia keluar masuk sarang tanpa lelah, membawa bekal makanan sedikit demi sedikit meskipun matahari sangat terik.
+
+Di dekat sana, seekor belalang menghabiskan harinya dengan bernyanyi dan bermain di antara rerumputan. "Untuk apa kau bekerja sekeras itu, semut? Musim panas ini panjang, nikmatilah harimu," kata belalang sambil memetik biola kecil dari tangkai rumput kering.
+
+Semut hanya menjawab singkat, "Musim dingin akan datang, dan aku harus punya cukup makanan untuk bertahan." Belalang tertawa dan kembali bernyanyi, tidak menghiraukan nasihat semut.
+
+Hari demi hari berlalu, musim panas pun berakhir. Angin dingin mulai bertiup dan salju perlahan menutupi padang rumput. Belalang yang tidak memiliki persediaan makanan mulai kelaparan dan kedinginan. Ia berjalan gontai mencari makanan, namun semua ladang telah tertutup salju.
+
+Dengan langkah lemah, belalang mengetuk pintu sarang semut. Semut yang melihat keadaan belalang merasa iba dan membukakan pintu, memberinya sedikit makanan dari hasil kerja kerasnya selama musim panas. "Terima kasih, semut. Sekarang aku mengerti pentingnya bekerja lebih awal," kata belalang dengan penuh sesal.
+
+Sejak saat itu, belalang belajar untuk tidak lagi menunda pekerjaan, dan setiap musim panas berikutnya, ia pun ikut bekerja bersama semut, mempersiapkan hari esok dengan lebih bijaksana.`
+    },
+    {
+      title: "Bawang Merah dan Bawang Putih",
+      text: `Di sebuah desa yang damai, hiduplah seorang gadis bernama Bawang Putih bersama ibu tirinya dan saudara tirinya, Bawang Merah. Sejak ayahnya meninggal dunia, Bawang Putih diperlakukan dengan tidak adil. Ia harus mengerjakan semua pekerjaan rumah, sementara Bawang Merah dan ibunya hanya bersantai sepanjang hari.
+
+Suatu ketika, Bawang Putih diminta mencuci pakaian di sungai. Tanpa sengaja, selendang milik ibu tirinya hanyut terbawa arus. Karena takut dimarahi, Bawang Putih menyusuri sungai untuk mencari selendang tersebut hingga bertemu seorang nenek tua di sebuah gubuk kecil.
+
+Nenek itu bersedia mengembalikan selendang tersebut, namun meminta Bawang Putih untuk membantunya membersihkan rumah terlebih dahulu. Dengan senang hati, Bawang Putih membantu tanpa mengeluh. Sebagai balasan, nenek itu memberinya pilihan antara dua labu, satu besar dan satu kecil. Karena rendah hati, Bawang Putih memilih labu yang kecil.
+
+Sesampainya di rumah, ketika labu itu dibelah, keluarlah emas, perhiasan, dan berbagai harta berharga dari dalamnya. Melihat hal itu, Bawang Merah menjadi iri dan segera pergi ke sungai yang sama, sengaja menghanyutkan selendangnya sendiri agar bisa bertemu nenek tersebut.
+
+Namun karena bersikap kasar dan malas membantu, serta memilih labu yang besar karena keserakahannya, Bawang Merah justru mendapatkan labu berisi ular dan hal-hal buruk saat dibuka di rumah.
+
+Sejak kejadian itu, ibu tiri dan Bawang Merah menyadari kesalahan mereka dan mulai memperlakukan Bawang Putih dengan lebih baik. Mereka pun hidup rukun, belajar bahwa kejujuran dan kerendahan hati selalu membawa berkah.`
+    },
+    {
+      title: "Timun Mas",
+      text: `Di sebuah desa, hiduplah seorang janda tua bernama Mbok Sirni yang sangat mendambakan seorang anak. Suatu malam, seekor raksasa hijau menemuinya dan memberikan biji timun ajaib, dengan syarat bahwa anak yang lahir dari biji itu harus diserahkan kembali kepadanya ketika berusia tujuh belas tahun.
+
+Mbok Sirni menanam biji itu dengan penuh kasih sayang, dan tak lama kemudian tumbuhlah sebutir timun emas yang besar. Ketika dibelah, muncullah seorang bayi perempuan cantik yang diberi nama Timun Mas. Mbok Sirni membesarkannya dengan penuh cinta, namun ia selalu cemas mengingat janjinya kepada raksasa.
+
+Ketika hari yang ditakutkan tiba, raksasa datang untuk menagih janji. Mbok Sirni yang panik segera memberi Timun Mas empat bungkusan ajaib, yaitu biji timun, jarum, garam, dan terasi, lalu menyuruhnya melarikan diri ke hutan.
+
+Sang raksasa mengejar dengan langkah besar. Timun Mas pun menaburkan biji timun yang seketika tumbuh menjadi ladang timun lebat, memperlambat langkah raksasa. Namun raksasa tetap mengejar, sehingga Timun Mas melemparkan jarum yang berubah menjadi hutan bambu berduri tajam.
+
+Raksasa yang terluka tetap mengejar dengan marah. Timun Mas kemudian menaburkan garam yang berubah menjadi lautan luas, namun raksasa tetap mampu berenang melewatinya. Dalam keadaan terdesak, Timun Mas melemparkan terasi yang seketika berubah menjadi rawa lumpur mendidih yang luas.
+
+Raksasa pun terjebak dan tenggelam dalam lumpur panas tersebut. Timun Mas akhirnya selamat dan kembali ke pelukan ibunya. Mereka hidup bahagia dan tenteram, jauh dari ancaman sang raksasa untuk selamanya.`
+    },
+    {
+      title: "Malin Kundang",
+      text: `Di sebuah kampung nelayan, hiduplah seorang anak laki-laki bernama Malin Kundang bersama ibunya yang bekerja keras seorang diri sejak sang ayah meninggal. Meski hidup sederhana, ibunya selalu berusaha memberikan yang terbaik untuk Malin.
+
+Setelah dewasa, Malin memutuskan untuk merantau ke negeri seberang demi mengubah nasib keluarganya. Ibunya melepas kepergiannya dengan berat hati, berharap suatu hari anaknya akan kembali. Bertahun-tahun berlalu, Malin bekerja keras hingga akhirnya berhasil menjadi saudagar kaya raya dan menikahi seorang wanita bangsawan.
+
+Suatu hari, kapal megah milik Malin berlabuh di kampung halamannya. Mendengar kabar tersebut, sang ibu yang sudah menua bergegas menemuinya dengan penuh rindu. Namun karena malu dengan penampilan ibunya yang lusuh di hadapan istri dan para pengawalnya, Malin berpura-pura tidak mengenalinya.
+
+"Wanita tua ini bukan ibuku," ucap Malin dengan angkuh, bahkan menghardik ibunya pergi. Hati sang ibu hancur mendengar penolakan anak yang telah dibesarkannya dengan penuh pengorbanan. Dengan air mata berlinang, ia berdoa kepada Tuhan agar kedurhakaan anaknya mendapat balasan yang setimpal.
+
+Tak lama setelah itu, langit tiba-tiba menjadi gelap, badai besar datang menerjang kapal Malin Kundang. Petir menyambar-nyambar dan ombak mengamuk hebat, menghancurkan kapal beserta seluruh isinya. Malin Kundang perlahan berubah menjadi batu karang, sebagai pengingat atas kedurhakaannya kepada sang ibu.
+
+Hingga kini, batu karang berbentuk tubuh manusia itu masih dapat dijumpai di pesisir pantai, menjadi kisah pengingat bagi setiap anak untuk selalu menghormati dan menyayangi orang tua mereka.`
+    },
+    {
+      title: "Legenda Danau Toba",
+      text: `Dahulu kala, hiduplah seorang petani muda bernama Toba yang tinggal seorang diri di sebuah desa. Suatu hari, ketika sedang memancing, ia mendapatkan seekor ikan emas yang sangat indah. Ajaibnya, ikan itu berubah menjadi seorang wanita cantik jelita.
+
+Wanita itu bersedia menikah dengan Toba, dengan satu syarat: Toba tidak boleh menceritakan asal-usulnya sebagai ikan kepada siapa pun, termasuk kepada anak mereka kelak. Toba pun berjanji dengan sungguh-sungguh, dan mereka hidup bahagia hingga dikaruniai seorang putra bernama Samosir.
+
+Samosir tumbuh menjadi anak yang kurang membantu orang tuanya dan sering merasa lapar tanpa mau bersabar. Suatu hari, ibunya meminta Samosir mengantarkan makanan kepada ayahnya di ladang. Namun di tengah jalan, Samosir malah memakan seluruh makanan tersebut karena rasa laparnya.
+
+Ketika mengetahui hal itu, Toba menjadi sangat marah dan tanpa sadar berteriak, "Dasar anak keturunan ikan, tidak tahu bersyukur!" Seketika itu juga, langit mendung, hujan turun sangat deras, dan tanah mulai bergetar hebat. Toba baru menyadari bahwa ia telah melanggar janjinya sendiri.
+
+Air bah pun meluap dengan cepat menenggelamkan seluruh desa. Samosir dikisahkan berubah menjadi sebuah pulau di tengah genangan air yang terus meluas, sementara wilayah yang tenggelam itu kemudian dikenal sebagai Danau Toba, dan pulau di tengahnya diberi nama Pulau Samosir.
+
+Hingga kini, Danau Toba menjadi salah satu danau terindah di Indonesia, menyimpan kisah tentang pentingnya menepati janji dan menjaga kesabaran dalam keluarga.`
+    },
+    {
+      title: "Anak Gembala dan Serigala",
+      text: `Di sebuah desa kecil di kaki bukit, tinggallah seorang anak gembala yang bertugas menjaga kawanan domba milik warga desa setiap hari. Karena merasa bosan menjaga domba seorang diri di padang rumput, ia sering mencari cara untuk menghibur dirinya sendiri.
+
+Suatu hari, ia berteriak sekuat tenaga, "Serigala! Serigala! Tolong, ada serigala menyerang domba-dombaku!" Mendengar teriakan itu, para warga desa bergegas berlari membawa tongkat dan peralatan untuk menolongnya. Namun setibanya di padang rumput, mereka tidak menemukan serigala sama sekali. Anak gembala itu tertawa terbahak-bahak melihat warga yang kelelahan berlari sia-sia.
+
+Keesokan harinya, anak gembala mengulangi kejahilannya. "Serigala datang lagi! Tolong aku!" teriaknya lagi. Warga desa yang masih peduli kembali berlari untuk menolong, namun sekali lagi mereka hanya menemukan anak gembala yang tertawa puas atas leluconnya.
+
+Para warga mulai merasa kesal dan tidak lagi mempercayai teriakannya. Beberapa hari kemudian, seekor serigala sungguhan benar-benar muncul dan mulai menyerang kawanan domba. Anak gembala berteriak sekuat mungkin meminta pertolongan, namun kali ini tidak ada satu pun warga yang datang karena mengira ia hanya bercanda seperti sebelumnya.
+
+Akibatnya, banyak domba yang hilang dan terluka karena serangan serigala tersebut. Anak gembala pun menyesal atas kebohongan yang telah ia lakukan berulang kali. Ia belajar bahwa kejujuran sangat penting untuk dijaga, karena kebohongan yang terus diulang pada akhirnya akan membuat orang lain tidak lagi percaya, bahkan di saat pertolongan benar-benar dibutuhkan.`
+    },
+    {
+      title: "Semut dan Merpati yang Saling Menolong",
+      text: `Di tepi sungai yang jernih, hiduplah seekor semut kecil yang sedang berjalan mencari makanan untuk sarangnya. Karena terlalu asyik mencari remah roti, ia tidak menyadari bahwa dirinya berjalan terlalu dekat dengan tepi sungai hingga akhirnya terpeleset dan jatuh ke dalam air.
+
+Arus sungai yang cukup deras membuat semut kesulitan untuk berenang kembali ke tepian. Ia berusaha sekuat tenaga, namun tubuhnya yang kecil membuatnya semakin terbawa arus. Untunglah, seekor burung merpati yang bertengger di ranting pohon dekat sungai melihat kejadian tersebut.
+
+Merpati segera memetik sehelai daun kering dan menjatuhkannya tepat di dekat semut. Dengan sisa tenaga yang ada, semut naik ke atas daun tersebut dan mengapung dengan aman hingga terdampar di tepi sungai. Semut pun mengucapkan terima kasih yang tulus kepada merpati atas pertolongannya.
+
+Beberapa waktu kemudian, seorang pemburu datang membawa jaring dan bersiap menangkap merpati yang sedang beristirahat di dahan pohon. Semut yang kebetulan lewat di dekat kaki pemburu menyadari bahaya tersebut. Tanpa ragu, semut segera menggigit tumit pemburu itu sekuat mungkin.
+
+Pemburu itu terkejut kesakitan dan tanpa sengaja menjatuhkan jaringnya, sehingga merpati pun terbang menjauh dengan selamat sebelum sempat tertangkap. Merpati sangat berterima kasih kepada semut yang telah membalas kebaikannya.
+
+Sejak hari itu, semut dan merpati menjadi sahabat yang saling menjaga. Kisah mereka mengajarkan bahwa kebaikan sekecil apa pun yang kita berikan kepada orang lain, suatu saat akan kembali kepada diri kita sendiri.`
+    },
+    {
+      title: "Kera dan Kura-Kura",
+      text: `Di tepi hutan, hiduplah seekor kera dan seekor kura-kura yang bersahabat baik. Suatu hari, mereka menemukan sebatang pohon pisang hanyut di sungai. Karena tidak ingin berebut, mereka sepakat membagi pohon tersebut menjadi dua bagian: kera mendapatkan bagian atas yang berdaun lebat, sedangkan kura-kura mendapatkan bagian bawah berakar.
+
+Kura-kura menanam bagiannya di tanah dengan telaten, menyiraminya setiap hari hingga tumbuh menjadi pohon pisang yang subur dan berbuah lebat. Sementara itu, kera hanya menancapkan bagian atasnya begitu saja tanpa dirawat, sehingga pohon tersebut layu dan mati dalam beberapa hari.
+
+Melihat pohon pisang milik kura-kura berbuah lebat, kera merasa iri. Ia lalu memanjat pohon tersebut tanpa izin dan memakan seluruh buah pisang yang matang, tanpa menyisakan sedikit pun untuk kura-kura yang telah bersusah payah merawatnya sejak awal.
+
+Kura-kura yang mendapati pohonnya sudah gundul merasa sangat sedih dan kecewa dengan sikap kera. Namun, dengan penuh kesabaran, ia mencari cara untuk memberi pelajaran tanpa membalas dengan kekerasan. Ia menanam batang bambu runcing di sekeliling pohon dan bersembunyi menunggu kera datang kembali.
+
+Ketika kera datang lagi untuk mencuri buah pisang di lain waktu, ia terjatuh dari pohon karena tersandung batang bambu yang telah disusun kura-kura, membuatnya terluka dan jera. Kera pun menyadari kesalahannya dan meminta maaf kepada kura-kura atas keserakahan serta ketidakjujurannya selama ini.
+
+Kura-kura yang berhati lapang memaafkan kera, dengan syarat kera mau belajar bekerja keras dan tidak lagi mengambil hak orang lain. Sejak saat itu, keduanya kembali bersahabat, hidup rukun sambil saling mengingatkan pentingnya kejujuran dan kerja keras.`
+    }
+  ];
+
+  const bookshelf = document.getElementById('bookshelf');
+  books.forEach((book, i) => {
+    const div = document.createElement('button');
+    div.type = 'button';
+    div.className = 'book';
+    div.style.background = bookColors[i % bookColors.length];
+    div.innerHTML = `
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      <span class="title">${book.title}</span>
+      <span class="hint">Klik untuk membaca →</span>
+    `;
+    div.addEventListener('click', () => openBook(i));
+    bookshelf.appendChild(div);
+  });
+
+  const modal = document.getElementById('bookModal');
+  const bookTitleEl = document.getElementById('bookTitle');
+  const bookTextEl = document.getElementById('bookText');
+
+  function openBook(i){
+    const book = books[i];
+    bookTitleEl.textContent = book.title;
+    bookTextEl.innerHTML = book.text
+      .split('\n\n')
+      .map(p => `<p>${p.trim()}</p>`)
+      .join('');
+    modal.classList.remove('hidden');
+    modal.scrollTop = 0;
+  }
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') modal.classList.add('hidden');
+  });
+</script>
+
 </body>
 </html>
