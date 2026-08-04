@@ -116,6 +116,47 @@
   }
   @media (max-width: 640px){ #nav-dots{ right: 12px; } }
 
+  /* ---------- Music toggle ---------- */
+  #music-toggle{
+    position: fixed;
+    left: 20px; top: 20px;
+    z-index: 60;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,163,189,0.35);
+    background: rgba(58,31,56,0.55);
+    backdrop-filter: blur(6px);
+    color: var(--rose-soft);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: transform .35s var(--ease), background .35s ease, border-color .35s ease;
+  }
+  #music-toggle:hover{ transform: scale(1.08); border-color: rgba(232,163,189,0.6); }
+  #music-toggle svg{ width: 19px; height: 19px; }
+  #music-toggle .bar{
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 16px;
+  }
+  #music-toggle .bar i{
+    display: block;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--rose-soft);
+    animation: eq 1s ease-in-out infinite;
+  }
+  #music-toggle .bar i:nth-child(1){ height: 40%; animation-delay: -0.6s; }
+  #music-toggle .bar i:nth-child(2){ height: 100%; animation-delay: -0.2s; }
+  #music-toggle .bar i:nth-child(3){ height: 65%; animation-delay: -0.9s; }
+  #music-toggle.muted .bar i{ animation-play-state: paused; height: 30% !important; opacity: .45; }
+  @keyframes eq{
+    0%,100%{ height: 30%; }
+    50%{ height: 100%; }
+  }
+  @media (max-width: 640px){ #music-toggle{ left: 12px; top: 12px; width: 40px; height: 40px; } }
+
   /* ======================= APP / SCREENS ======================= */
   .app{ position: fixed; inset: 0; z-index: 5; }
 
@@ -125,7 +166,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: safe center;
     text-align: center;
     padding: clamp(20px,6vh,60px) clamp(18px,6vw,60px);
     opacity: 0;
@@ -156,10 +197,12 @@
   .screen.active .stagger{ opacity: 1; transform: translateY(0); }
   .screen.active .stagger:nth-child(1){ transition-delay: .15s; }
   .screen.active .stagger:nth-child(2){ transition-delay: .3s; }
-  .screen.active .stagger:nth-child(3){ transition-delay: .45s; }
-  .screen.active .stagger:nth-child(4){ transition-delay: .6s; }
-  .screen.active .stagger:nth-child(5){ transition-delay: .75s; }
-  .screen.active .stagger:nth-child(6){ transition-delay: .9s; }
+  .screen.active .stagger:nth-child(3){ transition-delay: .42s; }
+  .screen.active .stagger:nth-child(4){ transition-delay: .54s; }
+  .screen.active .stagger:nth-child(5){ transition-delay: .66s; }
+  .screen.active .stagger:nth-child(6){ transition-delay: .78s; }
+  .screen.active .stagger:nth-child(7){ transition-delay: .9s; }
+  .screen.active .stagger:nth-child(8){ transition-delay: 1.02s; }
 
   /* ---------- shared headers ---------- */
   .sec-eyebrow{ font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
@@ -263,7 +306,26 @@
     margin-bottom: 6px;
   }
   #hero .name{ font-style: italic; display:block; }
-  #hero p.sub{ max-width: 480px; font-size: 15.5px; line-height: 1.7; color: var(--rose-soft); opacity: 0.9; margin: 14px auto 0; }
+  #hero p.sub{ max-width: 480px; font-size: 15.5px; line-height: 1.7; color: var(--rose-soft); opacity: 0.9; margin: 12px auto 0; }
+  .wish-list{
+    max-width: 480px;
+    margin: 20px auto 0;
+    text-align: left;
+    background: rgba(232,163,189,0.07);
+    border: 1px solid rgba(232,163,189,0.2);
+    border-radius: 16px;
+    padding: 18px 22px;
+  }
+  .wish-list-title{
+    font-family: var(--font-display); font-style: italic;
+    font-size: 14.5px; color: var(--gold); margin-bottom: 10px;
+  }
+  .wish-list ul{ list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .wish-list li{
+    font-size: 14px; line-height: 1.55; color: var(--rose-soft); opacity: 0.92;
+    display: flex; align-items: flex-start; gap: 9px;
+  }
+  .wl-icon{ color: var(--gold); flex-shrink: 0; margin-top: 1px; }
 
   /* ======================= GALERI ======================= */
   .gallery-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px,2vw,20px); max-width: 680px; width: 100%; }
@@ -373,6 +435,10 @@
 <div id="hearts-layer"></div>
 <canvas id="confetti-canvas"></canvas>
 
+<button id="music-toggle" aria-label="Nyala/matikan musik">
+  <span class="bar"><i></i><i></i><i></i></span>
+</button>
+
 <nav id="nav-dots">
   <button data-target="cover" class="active" aria-label="Sampul"></button>
   <button data-target="hero" aria-label="Ucapan"></button>
@@ -404,6 +470,17 @@
     <p class="sec-eyebrow stagger">Hari ini spesial, karena</p>
     <h1 class="stagger">Selamat Ulang Tahun<span class="name" id="namaTarget">Sayang</span></h1>
     <p class="sub stagger">Dari semua hari di kalender, hari ini yang paling aku tunggu. Karena hari ini, dunia dapat alasan baru untuk bersyukur — kamu lahir.</p>
+    <p class="sub stagger">Aku tahu ucapan ini cuma kata-kata di layar, tapi aku harap kamu bisa rasakan semua yang aku maksud di baliknya: bahwa kamu berarti jauh lebih dari yang biasa aku tunjukkan sehari-hari.</p>
+    <p class="sub stagger">Terima kasih sudah bertahan di semua hari susahmu, sudah tetap jadi dirimu yang hangat di tengah semua tekanan, dan sudah mengizinkan aku ikut ambil bagian di ceritamu.</p>
+    <div class="wish-list stagger">
+      <p class="wish-list-title">Di hari ulang tahunmu ini, aku mendoakan supaya:</p>
+      <ul>
+        <li><span class="wl-icon">✦</span> setiap rencana baikmu dimudahkan jalannya</li>
+        <li><span class="wl-icon">✦</span> capekmu dibayar lunas dengan hasil yang setimpal</li>
+        <li><span class="wl-icon">✦</span> orang-orang di sekitarmu selalu memperlakukanmu sebaik kamu memperlakukan mereka</li>
+        <li><span class="wl-icon">✦</span> kamu makin sayang sama dirimu sendiri, seperti aku sayang kamu</li>
+      </ul>
+    </div>
     <button class="btn-next show stagger" data-next="galeri"><span>Lanjut</span><span class="arr">→</span></button>
   </section>
 
@@ -505,10 +582,207 @@ Aku ada di sini. Sekarang, nanti, dan seterusnya.`;
 
 document.getElementById('namaTarget').textContent = NAMA_PACAR;
 
+/* ---------- Musik romantis (disintesis langsung di browser, bukan file) ----------
+   Kenapa begini? Supaya tidak perlu upload file lagu (dan tidak melanggar hak
+   cipta lagu orang lain). Ini melodi ambient orisinal, lembut, dibuat pakai
+   Web Audio API. Kalau kamu punya file MP3 sendiri yang legal dipakai, cari
+   komentar "GANTI DENGAN FILE MP3" di bawah untuk opsi menggantinya. */
+const MusicEngine = (() => {
+  let ctx, masterGain, filter, delayNode, feedbackNode, delayGain;
+  let playing = false;
+  let muted = false;
+  let stepTimer = null;
+  let step = 0;
+
+  const BPM = 64;
+  const stepDur = (60 / BPM) / 4; // durasi 1 not seperenambelas (detik)
+  const LOOKAHEAD = 0.08;
+
+  // progresi akor: Am7 - Fmaj7 - Cmaj7 - G  (1 akor = 1 birama = 16 step)
+  const chords = [
+    { pad: [220.00, 261.63, 329.63, 392.00], bass: 110.00 },
+    { pad: [174.61, 220.00, 261.63, 349.23], bass: 87.31 },
+    { pad: [130.81, 164.81, 196.00, 246.94], bass: 65.41 },
+    { pad: [196.00, 246.94, 293.66, 392.00], bass: 98.00 }
+  ];
+
+  const N = { C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
+              C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99 };
+
+  // melodi tetap, 4 birama x 16 step = 64 step, lalu diulang (ini "lagu" nya)
+  const melody = [
+    { step: 0,  note: N.E5, dur: 4 },
+    { step: 4,  note: N.C5, dur: 3 },
+    { step: 8,  note: N.D5, dur: 4 },
+    { step: 12, note: N.E5, dur: 3 },
+    { step: 16, note: N.F5, dur: 4 },
+    { step: 20, note: N.A4, dur: 2 },
+    { step: 22, note: N.C5, dur: 2 },
+    { step: 24, note: N.D5, dur: 7 },
+    { step: 32, note: N.E5, dur: 4 },
+    { step: 36, note: N.D5, dur: 3 },
+    { step: 40, note: N.C5, dur: 4 },
+    { step: 44, note: N.B4, dur: 3 },
+    { step: 48, note: N.A4, dur: 4 },
+    { step: 52, note: N.B4, dur: 3 },
+    { step: 56, note: N.D5, dur: 7 }
+  ];
+  const melodyByStep = {};
+  melody.forEach(m => { melodyByStep[m.step] = m; });
+
+  function init(){
+    if(ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0;
+
+    filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 2800;
+
+    delayNode = ctx.createDelay();
+    delayNode.delayTime.value = stepDur * 6;
+    feedbackNode = ctx.createGain();
+    feedbackNode.gain.value = 0.24;
+    delayGain = ctx.createGain();
+    delayGain.gain.value = 0.2;
+
+    delayNode.connect(feedbackNode);
+    feedbackNode.connect(delayNode);
+    delayNode.connect(delayGain);
+    delayGain.connect(masterGain);
+
+    filter.connect(masterGain);
+    masterGain.connect(ctx.destination);
+  }
+
+  function playPad(freqs, time, duration){
+    freqs.forEach(f=>{
+      const osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.value = f;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, time);
+      g.gain.linearRampToValueAtTime(0.032, time + 1.6);
+      g.gain.linearRampToValueAtTime(0, time + duration);
+      osc.connect(g);
+      g.connect(filter);
+      osc.start(time);
+      osc.stop(time + duration + 0.15);
+    });
+  }
+
+  function playBass(freq, time, duration){
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.linearRampToValueAtTime(0.09, time + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.001, time + duration);
+    osc.connect(g);
+    g.connect(filter);
+    osc.start(time);
+    osc.stop(time + duration + 0.1);
+  }
+
+  // "melodi utama": campuran sine + triangle biar mirip music box / piano lembut
+  function playMelodyNote(freq, time, duration){
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.linearRampToValueAtTime(0.07, time + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.0006, time + duration);
+    g.connect(filter);
+    g.connect(delayNode);
+
+    const osc1 = ctx.createOscillator();
+    osc1.type = 'sine';
+    osc1.frequency.value = freq;
+    osc1.connect(g);
+    osc1.start(time);
+    osc1.stop(time + duration + 0.15);
+
+    const osc2 = ctx.createOscillator();
+    osc2.type = 'triangle';
+    osc2.frequency.value = freq * 2; // oktaf di atas, tipis, buat kilau
+    const g2 = ctx.createGain();
+    g2.gain.value = 0.16;
+    osc2.connect(g2);
+    g2.connect(g);
+    osc2.start(time);
+    osc2.stop(time + duration + 0.15);
+  }
+
+  function scheduler(){
+    const now = ctx.currentTime;
+    const localStep = step % 64;
+    const barIndex = Math.floor(localStep / 16);
+    const posInBar = localStep % 16;
+    const time = now + LOOKAHEAD;
+
+    if(posInBar === 0){
+      const chord = chords[barIndex];
+      playPad(chord.pad, time, stepDur * 16 * 1.05);
+      playBass(chord.bass, time, stepDur * 4);
+    }
+    if(posInBar === 8){
+      playBass(chords[barIndex].bass * 2, time, stepDur * 3);
+    }
+    const note = melodyByStep[localStep];
+    if(note){
+      playMelodyNote(note.note, time, note.dur * stepDur);
+    }
+
+    step++;
+    stepTimer = setTimeout(scheduler, stepDur * 1000);
+  }
+
+  function start(){
+    init();
+    if(ctx.state === 'suspended') ctx.resume();
+    if(playing) return;
+    playing = true;
+    step = 0;
+    const now = ctx.currentTime;
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+    masterGain.gain.linearRampToValueAtTime(muted ? 0 : 1, now + 2.6);
+    scheduler();
+  }
+
+  function toggleMute(){
+    muted = !muted;
+    if(ctx){
+      const now = ctx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.linearRampToValueAtTime(muted ? 0 : 1, now + 0.6);
+    }
+    if(!playing && !muted) start();
+    return muted;
+  }
+
+  return { start, toggleMute, isPlaying: ()=>playing };
+})();
+
+/* GANTI DENGAN FILE MP3 (opsional):
+   Kalau mau pakai lagu MP3 asli milikmu sendiri, hapus blok MusicEngine di
+   atas, lalu pakai cara sederhana ini:
+   const audio = new Audio('musik-romantis.mp3');
+   audio.loop = true; audio.volume = 0.35;
+   // panggil audio.play() di dalam event click amplop (lihat di bawah),
+   // karena browser memblokir autoplay tanpa interaksi pengguna. */
+
+const musicToggleBtn = document.getElementById('music-toggle');
+musicToggleBtn.addEventListener('click', ()=>{
+  const isMuted = MusicEngine.toggleMute();
+  musicToggleBtn.classList.toggle('muted', isMuted);
+});
+
 /* ---------- Screen navigation (klik, bukan scroll) ---------- */
 const screenOrder = ['cover','hero','galeri','kuis','surat','kue'];
-let currentScreen = 'cover';
-const navButtons = document.querySelectorAll('#nav-dots button');
+let currentScreen = 'cowidth/2onst navButtons = document.querySelectorAll('#nav-dots button');
 
 function goToScreen(name){
   if(name === currentScreen) return;
@@ -556,6 +830,7 @@ const envelopeWrap = document.getElementById('envelopeWrap');
 envelopeWrap.addEventListener('click', () => {
   if(envelopeWrap.classList.contains('open')) return;
   envelopeWrap.classList.add('open');
+  MusicEngine.start();
   const rect = envelopeWrap.getBoundingClientRect();
   burstConfetti(rect.left + rect.width/2, rect.top + rect.height*0.3, 60);
   setTimeout(()=> goToScreen('hero'), 1300);
