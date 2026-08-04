@@ -2,608 +2,750 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IX D — Kelas Kompak, Kelas Hebat, Rapih, Kuat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Untuk Kamu 🤍</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+  /* ======================================================================
+     CARA EDIT CEPAT
+     1. Ganti NAMA_PACAR di <script> paling bawah dengan nama panggilannya.
+     2. Edit array QUIZ di <script> untuk mengganti pertanyaan & jawaban.
+     3. Edit teks SURAT di <script> dengan kata-katamu sendiri.
+     4. Kalau punya foto, ganti div.photo-placeholder dengan
+        <img src="foto-kamu.jpg" class="photo-real"> lalu hapus placeholder.
+     Website ini TIDAK di-scroll — setiap klik "Lanjut" akan mengganti
+     seluruh layar dengan transisi fade + scale, seperti berpindah slide.
+     ====================================================================== */
+
   :root{
-    --paper:#FBF6EA;
-    --paper-line:#E3D9BF;
-    --board:#173229;
-    --board-2:#0F241C;
-    --chalk:#F4F1E6;
-    --ink:#22303C;
-    --senin:#3A6EA5;
-    --selasa:#E4572E;
-    --rabu:#D9558C;
-    --kamis:#2A9D8F;
-    --jumat:#7B5EA7;
-    --gold:#F2B705;
-    --shadow: 0 10px 30px rgba(15,36,28,0.15);
+    --plum-deep: #241322;
+    --plum-mid: #3a1f38;
+    --plum-soft: #4d2a4a;
+    --rose: #e8a3bd;
+    --rose-soft: #f3c9d6;
+    --gold: #d9b382;
+    --cream: #fbf1ea;
+    --ink: #2a1826;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Quicksand', sans-serif;
+    --ease: cubic-bezier(.16,1,.3,1);
   }
 
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{
+    height: 100%;
+    overflow: hidden;
+    background: var(--plum-deep);
+  }
+
   body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Nunito', sans-serif;
-    line-height:1.6;
+    font-family: var(--font-body);
+    color: var(--cream);
+    position: relative;
   }
 
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative;
+  ::selection{ background: var(--rose); color: var(--ink); }
+
+  /* animated ambient background */
+  body::before{
+    content:'';
+    position: fixed;
+    inset: -10%;
     background:
-      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.05), transparent 40%),
-      radial-gradient(circle at 85% 75%, rgba(255,255,255,0.06), transparent 45%),
-      linear-gradient(160deg, var(--board), var(--board-2));
-    color:var(--chalk);
-    padding:64px 24px 88px;
-    text-align:center;
-    overflow:hidden;
+      radial-gradient(circle at 18% 22%, rgba(232,163,189,0.14), transparent 42%),
+      radial-gradient(circle at 82% 74%, rgba(217,179,130,0.11), transparent 46%),
+      radial-gradient(circle at 50% 105%, rgba(77,42,74,0.55), transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+    animation: ambientDrift 18s ease-in-out infinite alternate;
   }
-  .hero::after{
-    content:"";
+  @keyframes ambientDrift{
+    0%{ transform: translate(0,0) scale(1); }
+    100%{ transform: translate(-2%, 2%) scale(1.05); }
+  }
+
+  #hearts-layer{
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .heart-particle{
+    position: absolute;
+    bottom: -40px;
+    color: var(--rose-soft);
+    opacity: 0.5;
+    animation: floatUp linear infinite;
+    filter: drop-shadow(0 0 6px rgba(232,163,189,0.35));
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10%{ opacity: 0.55; }
+    90%{ opacity: 0.45; }
+    100%{ transform: translateY(-110vh) translateX(var(--drift,40px)) rotate(360deg); opacity: 0; }
+  }
+
+  #confetti-canvas{
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ---------- Nav dots ---------- */
+  #nav-dots{
+    position: fixed;
+    right: 22px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  #nav-dots button{
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1.5px solid var(--rose-soft);
+    background: transparent; cursor: pointer; padding: 0;
+    transition: all .45s var(--ease);
+    opacity: 0.5;
+  }
+  #nav-dots button.active{
+    background: var(--gold); border-color: var(--gold);
+    opacity: 1; transform: scale(1.4);
+    box-shadow: 0 0 10px rgba(217,179,130,0.7);
+  }
+  @media (max-width: 640px){ #nav-dots{ right: 12px; } }
+
+  /* ======================= APP / SCREENS ======================= */
+  .app{ position: fixed; inset: 0; z-index: 5; }
+
+  .screen{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(20px,6vh,60px) clamp(18px,6vw,60px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.92) translateY(26px);
+    filter: blur(10px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease), visibility 0s linear .8s;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar{ display:none; }
+  .screen.leaving{
+    transform: scale(1.04) translateY(-16px);
+    filter: blur(6px);
+  }
+  .screen.active{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+    transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease), visibility 0s linear 0s;
+  }
+
+  /* staggered inner reveal */
+  .screen .stagger{ opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .screen.active .stagger{ opacity: 1; transform: translateY(0); }
+  .screen.active .stagger:nth-child(1){ transition-delay: .15s; }
+  .screen.active .stagger:nth-child(2){ transition-delay: .3s; }
+  .screen.active .stagger:nth-child(3){ transition-delay: .45s; }
+  .screen.active .stagger:nth-child(4){ transition-delay: .6s; }
+  .screen.active .stagger:nth-child(5){ transition-delay: .75s; }
+  .screen.active .stagger:nth-child(6){ transition-delay: .9s; }
+
+  /* ---------- shared headers ---------- */
+  .sec-eyebrow{ font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .sec-title{ font-family: var(--font-display); font-weight: 600; font-size: clamp(1.6rem, 4.6vw, 2.8rem); margin-bottom: 8px; }
+  .sec-title em{ color: var(--rose); font-style: italic; }
+  .sec-sub{ color: var(--rose-soft); opacity: .85; max-width: 500px; font-size: 14px; line-height: 1.6; margin-bottom: clamp(20px,4vh,36px); }
+
+  .btn-next{
+    margin-top: clamp(20px,4vh,36px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(120deg, var(--rose), var(--gold));
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .5px;
+    border: none;
+    padding: 13px 26px;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(232,163,189,0.25);
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .btn-next.show{ opacity: 1; pointer-events: auto; }
+  .btn-next:hover{ transform: translateY(-3px); box-shadow: 0 16px 34px rgba(232,163,189,0.4); }
+  .btn-next .arr{ transition: transform .35s var(--ease); }
+  .btn-next:hover .arr{ transform: translateX(4px); }
+
+  /* ======================= COVER ======================= */
+  #cover .eyebrow{ font-size: 13px; letter-spacing: 5px; text-transform: uppercase; color: var(--rose-soft); opacity: 0.85; margin-bottom: 30px; }
+  .envelope-wrap{ perspective: 1400px; cursor: pointer; user-select: none; margin-bottom: 22px; }
+  .envelope{
+    position: relative;
+    width: min(300px, 74vw);
+    height: min(200px, 50vw);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+  }
+  .env-back{ position:absolute; inset:0; background: linear-gradient(155deg, #f3d9e2, var(--rose-soft)); }
+  .env-back::after{ content:''; position:absolute; inset: 12px; border: 1px dashed rgba(74,30,46,0.3); border-radius: 6px; }
+  .env-pocket{
+    position:absolute; left:0; right:0; bottom:0; height: 52%;
+    background: linear-gradient(0deg, rgba(74,30,46,0.14), transparent);
+    clip-path: polygon(0 100%, 50% 30%, 100% 100%);
+    z-index: 2;
+  }
+  .env-letter{
     position:absolute;
-    left:0; right:0; bottom:0;
-    height:14px;
-    background:repeating-linear-gradient(90deg, rgba(244,241,230,0.35) 0 10px, transparent 10px 22px);
-    opacity:0.5;
-  }
-  .eyebrow{
-    font-family:'Caveat', cursive;
-    font-size:1.4rem;
-    letter-spacing:1px;
-    color:var(--gold);
-    margin:0 0 4px;
-  }
-  .hero h1{
-    font-family:'Fredoka', sans-serif;
-    font-size:clamp(3.2rem, 10vw, 6rem);
-    margin:0;
-    letter-spacing:2px;
-    text-shadow: 0 0 18px rgba(242,183,5,0.15);
-  }
-  .hero p.tagline{
-    font-size:1.1rem;
-    max-width:520px;
-    margin:14px auto 0;
-    color:#D8E3DA;
-  }
-  .chalk-underline{
-    display:inline-block;
-    width:120px; height:6px;
-    margin-top:18px;
-    border-radius:4px;
-    background:linear-gradient(90deg, var(--senin), var(--selasa), var(--rabu), var(--kamis), var(--jumat));
-  }
-
-  /* ---------- MAIN NAV ---------- */
-  .tabs-main{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin:-32px auto 0;
-    position:relative;
-    z-index:5;
-    max-width:640px;
-    padding:0 16px;
-  }
-  .tabs-main button{
-    font-family:'Fredoka', sans-serif;
-    font-size:1rem;
-    padding:14px 26px;
-    border:none;
-    border-radius:14px;
-    background:var(--chalk);
-    color:var(--ink);
-    box-shadow:var(--shadow);
-    cursor:pointer;
-    transition:transform .15s ease, background .2s ease, color .2s ease;
-  }
-  .tabs-main button:hover{ transform:translateY(-2px); }
-  .tabs-main button.active{
-    background:var(--ink);
-    color:var(--chalk);
-  }
-
-  main{ max-width:960px; margin:0 auto; padding:56px 20px 20px; }
-
-  section.page{ display:none; animation:fadeIn .35s ease; }
-  section.page.visible{ display:block; }
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
-
-  h2.section-title{
-    font-family:'Fredoka', sans-serif;
-    font-size:2rem;
-    text-align:center;
-    margin-bottom:8px;
-  }
-  p.section-sub{
-    text-align:center;
-    color:#5b6b64;
-    margin-top:0;
-    margin-bottom:32px;
-  }
-
-  /* ---------- JADWAL ---------- */
-  .day-tabs{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:28px;
-  }
-  .day-tabs button{
-    font-family:'Fredoka', sans-serif;
-    border:none;
-    padding:10px 20px;
-    border-radius:999px;
-    cursor:pointer;
-    font-size:0.95rem;
-    color:#fff;
-    opacity:0.55;
-    transition:opacity .2s ease, transform .15s ease;
-  }
-  .day-tabs button:hover{ transform:translateY(-2px); }
-  .day-tabs button.active{ opacity:1; box-shadow:var(--shadow); }
-  .day-tabs button[data-day="Senin"]{ background:var(--senin); }
-  .day-tabs button[data-day="Selasa"]{ background:var(--selasa); }
-  .day-tabs button[data-day="Rabu"]{ background:var(--rabu); }
-  .day-tabs button[data-day="Kamis"]{ background:var(--kamis); }
-  .day-tabs button[data-day="Jumat"]{ background:var(--jumat); }
-
-  .notebook-page{
-    background:#fff;
-    border-radius:18px;
-    box-shadow:var(--shadow);
-    padding:36px 40px;
-    position:relative;
-    border-left:10px solid var(--dayColor, var(--senin));
-    background-image:repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 41px,
-      var(--paper-line) 42px
-    );
-  }
-  .notebook-page h3{
-    font-family:'Fredoka', sans-serif;
-    margin-top:0;
-    color:var(--dayColor, var(--senin));
-    font-size:1.5rem;
-  }
-  .notebook-page ol{
-    margin:0;
-    padding-left:22px;
-  }
-  .notebook-page li{
-    padding:6px 0;
-    font-size:1.08rem;
-    font-weight:700;
-  }
-  .notebook-page li::marker{
-    font-family:'Fredoka', sans-serif;
-    color:var(--dayColor, var(--senin));
-  }
-
-  /* ---------- BUKU CERITA ---------- */
-  .bookshelf{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
-    gap:20px;
-  }
-  .book{
-    cursor:pointer;
-    border-radius:10px 10px 4px 4px;
-    padding:20px 14px;
-    color:#fff;
-    min-height:200px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    box-shadow: inset -6px 0 0 rgba(0,0,0,0.15), var(--shadow);
-    transition:transform .18s ease, box-shadow .18s ease;
-    position:relative;
-    border:none;
-    text-align:left;
-    font-family:inherit;
-  }
-  .book:hover{ transform:translateY(-6px) rotate(-1deg); }
-  .book .num{
-    font-family:'Caveat', cursive;
-    font-size:1.4rem;
-    opacity:0.85;
-  }
-  .book .title{
-    font-family:'Fredoka', sans-serif;
-    font-size:1.05rem;
-    line-height:1.25;
-  }
-  .book .hint{
-    font-size:0.8rem;
-    opacity:0.85;
-  }
-
-  /* ---------- MODAL ---------- */
-  .modal{
-    position:fixed; inset:0;
-    background:rgba(15,36,28,0.55);
+    left: 12%; right: 12%; bottom: 8%;
+    height: 46%;
+    background: var(--cream);
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     display:flex; align-items:center; justify-content:center;
-    padding:24px;
-    z-index:50;
+    font-family: var(--font-display); font-style: italic;
+    color: var(--plum-deep); font-size: 13px;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .6s var(--ease) .35s, transform .8s var(--ease) .35s;
   }
-  .modal.hidden{ display:none; }
-  .modal-content{
-    background:var(--paper);
-    max-width:680px;
-    width:100%;
-    max-height:85vh;
-    overflow-y:auto;
-    border-radius:16px;
-    padding:36px 40px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.35);
-    position:relative;
+  .env-flap{
+    position:absolute; top:0; left:0; right:0; height: 58%;
+    background: linear-gradient(160deg, var(--rose), var(--rose-soft));
+    clip-path: polygon(0 0, 100% 0, 50% 92%);
+    transform-origin: top center;
+    backface-visibility: hidden;
+    transition: transform .9s var(--ease);
+    z-index: 4;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
   }
-  .close-btn{
-    position:sticky;
-    top:0; left:100%;
-    transform:translate(10px,-10px);
-    background:var(--ink);
-    color:var(--chalk);
-    border:none;
-    width:36px; height:36px;
-    border-radius:50%;
-    font-size:1.2rem;
-    cursor:pointer;
-    float:right;
+  .env-seal{
+    position:absolute; top: 30%; left:50%; transform: translate(-50%,-50%);
+    width: 44px; height:44px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e8b8c9, var(--rose) 70%);
+    display:flex; align-items:center; justify-content:center; font-size: 19px;
+    z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+    transition: opacity .4s ease, transform .4s ease;
   }
-  #bookTitle{
-    font-family:'Fredoka', sans-serif;
-    color:var(--ink);
-    margin-top:0;
-    clear:both;
+  .envelope-wrap.open .env-flap{ transform: rotateX(-180deg); }
+  .envelope-wrap.open .env-seal{ opacity: 0; transform: translate(-50%,-50%) scale(0); }
+  .envelope-wrap.open .env-letter{ opacity: 1; transform: translateY(-10px); }
+  .envelope-wrap:not(.open):hover .envelope{ animation: wiggle 1.6s ease-in-out infinite; }
+  @keyframes wiggle{
+    0%,100%{ transform: rotate(0deg); }
+    50%{ transform: rotate(-1.4deg) translateY(-3px); }
   }
-  #bookText p{ margin:0 0 14px; font-size:1.02rem; }
-  #bookText p:first-of-type::first-letter{
-    font-family:'Fredoka', sans-serif;
-    font-size:2.6rem;
-    float:left;
-    line-height:0.8;
-    padding-right:8px;
-    color:var(--gold);
-  }
+  #cover .hint{ font-size: 13px; color: var(--rose-soft); opacity: 0.75; letter-spacing: 1px; }
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    text-align:center;
-    padding:40px 20px 50px;
-    background:linear-gradient(180deg, transparent, var(--board));
-    color:var(--chalk);
-    margin-top:60px;
+  /* ======================= HERO ======================= */
+  #hero h1{
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(2rem, 7.5vw, 4.4rem); line-height: 1.08;
+    background: linear-gradient(100deg, var(--rose-soft), var(--gold) 55%, var(--rose));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 6px;
   }
-  footer .credit{
-    font-family:'Caveat', cursive;
-    font-size:1.6rem;
-    color:var(--gold);
-  }
-  footer small{ display:block; opacity:0.6; margin-top:4px; }
+  #hero .name{ font-style: italic; display:block; }
+  #hero p.sub{ max-width: 480px; font-size: 15.5px; line-height: 1.7; color: var(--rose-soft); opacity: 0.9; margin: 14px auto 0; }
 
-  @media (max-width:560px){
-    .notebook-page{ padding:26px 20px; }
-    .modal-content{ padding:26px 22px; }
+  /* ======================= GALERI ======================= */
+  .gallery-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px,2vw,20px); max-width: 680px; width: 100%; }
+  .photo-placeholder{
+    aspect-ratio: 1; border-radius: 16px;
+    background: linear-gradient(145deg, var(--plum-soft), var(--plum-mid));
+    border: 1px solid rgba(232,163,189,0.25);
+    display:flex; align-items:center; justify-content:center;
+    font-size: clamp(18px,3.4vw,28px); color: var(--rose-soft);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    transition: transform .5s var(--ease), box-shadow .5s var(--ease);
   }
+  .photo-placeholder:hover{ transform: translateY(-6px) rotate(-1deg) scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.45); }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation:none !important; transition:none !important; }
+  /* ======================= QUIZ ======================= */
+  .quiz-card{
+    width: min(540px, 92vw);
+    background: rgba(58,31,56,0.55);
+    border: 1px solid rgba(232,163,189,0.25);
+    backdrop-filter: blur(6px);
+    border-radius: 22px;
+    padding: clamp(22px,4vh,34px) clamp(20px,4vw,30px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
   }
+  .quiz-progress{ display:flex; gap: 6px; margin-bottom: 22px; justify-content:center; }
+  .quiz-progress span{ width: 26px; height: 4px; border-radius: 4px; background: rgba(232,163,189,0.25); transition: background .4s var(--ease); }
+  .quiz-progress span.done{ background: var(--gold); }
+  .quiz-question{
+    font-family: var(--font-display); font-size: clamp(1.05rem, 3vw, 1.4rem);
+    margin-bottom: 22px; min-height: 60px; display:flex; align-items:center; justify-content:center;
+  }
+  .quiz-options{ display:flex; flex-direction:column; gap: 10px; }
+  .quiz-opt{
+    background: rgba(251,241,234,0.06);
+    border: 1px solid rgba(232,163,189,0.3);
+    color: var(--cream); font-family: var(--font-body); font-size: 14.5px;
+    padding: 13px 16px; border-radius: 12px; cursor: pointer; text-align: left;
+    transition: all .3s var(--ease);
+  }
+  .quiz-opt:hover:not(:disabled){ background: rgba(232,163,189,0.15); transform: translateX(4px); }
+  .quiz-opt.correct{ background: rgba(163,214,163,0.25); border-color: #a3d6a3; }
+  .quiz-opt.wrong{ background: rgba(214,120,120,0.25); border-color: #d67878; }
+  .quiz-opt:disabled{ cursor: default; }
+  .quiz-feedback{ margin-top: 14px; font-size: 13.5px; min-height: 18px; color: var(--gold); opacity: 0; transition: opacity .4s var(--ease); }
+  .quiz-feedback.show{ opacity: 1; }
+  .quiz-result .score{ font-family: var(--font-display); font-size: 2.4rem; color: var(--rose); margin: 8px 0; }
+  .quiz-result p{ color: var(--rose-soft); line-height: 1.6; font-size: 14px; }
+
+  /* ======================= SURAT ======================= */
+  .letter-paper{
+    width: min(600px, 92vw);
+    max-height: 62vh;
+    overflow-y: auto;
+    background: var(--cream); color: var(--ink);
+    border-radius: 4px 18px 18px 4px;
+    padding: clamp(28px,4vh,44px) clamp(24px,4vw,40px);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+    position: relative;
+    font-family: var(--font-display); font-size: clamp(14px,2vw,16.5px); line-height: 1.8;
+    text-align: left;
+  }
+  .letter-paper::before{ content:''; position:absolute; left:0; top:0; bottom:0; width: 6px; background: linear-gradient(var(--rose), var(--gold)); }
+  .letter-paper .sign{ display:block; margin-top: 22px; font-style: italic; text-align: right; color: var(--rose); font-size: 17px; }
+  #letter-text{ white-space: pre-wrap; }
+  .typewriter-cursor{ display:inline-block; width: 2px; background: var(--rose); margin-left: 2px; animation: blink 0.9s step-end infinite; }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  /* ======================= KUE ======================= */
+  .cake-wrap{ position: relative; cursor: pointer; margin-bottom: 22px; }
+  .cake{ width: clamp(150px,32vw,200px); }
+  .cake svg{ width: 100%; height: auto; overflow: visible; }
+  .flame{ transform-origin: center bottom; animation: flicker 1.4s ease-in-out infinite; transition: opacity .5s ease, transform .5s ease; }
+  @keyframes flicker{
+    0%,100%{ transform: scaleY(1) scaleX(1) rotate(0deg); }
+    50%{ transform: scaleY(1.12) scaleX(0.94) rotate(2deg); }
+  }
+  .cake-wrap.blown .flame{ opacity: 0; transform: scaleY(0.2); }
+  .cake-wrap .smoke{ opacity: 0; transition: opacity .6s ease; }
+  .cake-wrap.blown .smoke{ opacity: 0.5; animation: smokeRise 2s ease-out forwards; }
+  @keyframes smokeRise{
+    0%{ transform: translateY(0) scale(1); opacity: .5; }
+    100%{ transform: translateY(-30px) scale(1.6); opacity: 0; }
+  }
+  .cake-hint{ font-size: 12.5px; color: var(--gold); opacity: .85; letter-spacing: 1px; margin-bottom: 4px; }
+  #kue h2{ font-family: var(--font-display); font-size: clamp(1.5rem, 5vw, 2.3rem); margin-bottom: 12px; }
+  #kue h2 em{ color: var(--rose); font-style: italic; }
+  #kue .wish{
+    max-width: 460px; color: var(--rose-soft); line-height: 1.7; font-size: 14.5px;
+    opacity: 0; transform: translateY(14px); transition: all .8s var(--ease);
+  }
+  .cake-wrap.blown ~ .wish{ opacity: 1; transform: translateY(0); }
+  .restart-btn{
+    margin-top: 30px;
+    background: transparent;
+    border: 1px solid rgba(232,163,189,0.4);
+    color: var(--rose-soft);
+    font-family: var(--font-body); font-size: 12px; letter-spacing: 1px;
+    padding: 10px 20px; border-radius: 30px; cursor: pointer;
+    opacity: 0; transition: opacity .8s var(--ease) .3s, background .3s ease;
+  }
+  .cake-wrap.blown ~ .restart-btn{ opacity: .7; }
+  .restart-btn:hover{ background: rgba(232,163,189,0.1); opacity: 1 !important; }
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <p class="eyebrow">SMP • Tahun Ajaran 2026/2027</p>
-  <h1>IX D</h1>
-  <p class="tagline">Kelas kompak, kelas hebat. Satu papan tulis, satu semangat, sejuta cerita.</p>
-  <div class="chalk-underline"></div>
-</header>
+<div id="hearts-layer"></div>
+<canvas id="confetti-canvas"></canvas>
 
-<nav class="tabs-main">
-  <button data-target="jadwal" class="active">📚 Jadwal Pelajaran</button>
-  <button data-target="cerita">📖 Buku Cerita</button>
-  <button onclick="window.open('https://chat.whatsapp.com/GF6kIzbTS4244ktOpy9oZm?s=cl&p=a&ilr=0')">👥 Grup Kelas</button>
+<nav id="nav-dots">
+  <button data-target="cover" class="active" aria-label="Sampul"></button>
+  <button data-target="hero" aria-label="Ucapan"></button>
+  <button data-target="galeri" aria-label="Galeri"></button>
+  <button data-target="kuis" aria-label="Kuis"></button>
+  <button data-target="surat" aria-label="Surat"></button>
+  <button data-target="kue" aria-label="Kue"></button>
 </nav>
 
-<main>
-<div style="background:rgba(255,255,255,.8);backdrop-filter:blur(12px);padding:18px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.12);margin-bottom:24px;text-align:center"><h2>👩‍🏫 WALI KELAS</h2><h3>BU YUYUN</h3></div>
+<div class="app" id="app">
 
-  <section id="jadwal" class="page visible">
-    <h2 class="section-title">Jadwal Pelajaran</h2>
-    <p class="section-sub">Pilih hari untuk melihat pelajaran kelas IX D</p>
-
-    <div class="day-tabs">
-      <button data-day="Senin" class="active">Senin</button>
-      <button data-day="Selasa">Selasa</button>
-      <button data-day="Rabu">Rabu</button>
-      <button data-day="Kamis">Kamis</button>
-      <button data-day="Jumat">Jumat</button>
+  <!-- ======================= COVER ======================= -->
+  <section class="screen active" id="cover">
+    <p class="eyebrow stagger">Sebuah kejutan kecil, untuk kamu</p>
+    <div class="envelope-wrap stagger" id="envelopeWrap">
+      <div class="envelope">
+        <div class="env-back"></div>
+        <div class="env-pocket"></div>
+        <div class="env-letter">buka aku, ya?</div>
+        <div class="env-flap"></div>
+        <div class="env-seal">🤍</div>
+      </div>
     </div>
-
-    <div class="notebook-page" id="notebookPage">
-      <h3 id="dayTitle">Senin</h3>
-      <ol id="dayList"></ol>
-    </div>
+    <p class="hint stagger">klik amplopnya untuk membuka</p>
   </section>
 
-  <section id="cerita" class="page">
-    <h2 class="section-title">Buku Cerita</h2>
-    <p class="section-sub">Rak cerita rakyat &amp; dongeng kelas IX D — klik buku untuk membaca cerita lengkap</p>
-    <div class="bookshelf" id="bookshelf"></div>
+  <!-- ======================= HERO ======================= -->
+  <section class="screen" id="hero">
+    <p class="sec-eyebrow stagger">Hari ini spesial, karena</p>
+    <h1 class="stagger">Selamat Ulang Tahun<span class="name" id="namaTarget">Sayang</span></h1>
+    <p class="sub stagger">Dari semua hari di kalender, hari ini yang paling aku tunggu. Karena hari ini, dunia dapat alasan baru untuk bersyukur — kamu lahir.</p>
+    <button class="btn-next show stagger" data-next="galeri"><span>Lanjut</span><span class="arr">→</span></button>
   </section>
 
-</main>
+  <!-- ======================= GALERI ======================= -->
+  <section class="screen" id="galeri">
+    <p class="sec-eyebrow stagger">Kenangan</p>
+    <h2 class="sec-title stagger">Beberapa <em>momen</em> favoritku</h2>
+    <p class="sec-sub stagger">(Ganti kotak ini dengan foto asli kalian — cari class <code>photo-placeholder</code> di file HTML)</p>
+    <div class="gallery-grid stagger">
+      <div class="photo-placeholder">📸</div>
+      <div class="photo-placeholder">💌</div>
+      <div class="photo-placeholder">🌙</div>
+      <div class="photo-placeholder">☕</div>
+      <div class="photo-placeholder">🎡</div>
+      <div class="photo-placeholder">🫶</div>
+    </div>
+    <button class="btn-next show stagger" data-next="kuis"><span>Lanjut</span><span class="arr">→</span></button>
+  </section>
 
-<div class="modal hidden" id="bookModal">
-  <div class="modal-content">
-    <button class="close-btn" id="closeModal">&times;</button>
-    <h2 id="bookTitle"></h2>
-    <div id="bookText"></div>
-  </div>
+  <!-- ======================= KUIS ======================= -->
+  <section class="screen" id="kuis">
+    <p class="sec-eyebrow stagger">Sesi Uji Ingatan</p>
+    <h2 class="sec-title stagger">Seberapa <em>kenal</em> kamu sama aku?</h2>
+    <div class="quiz-card stagger" id="quizCard">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+    <button class="btn-next stagger" id="quizNextBtn" data-next="surat"><span>Lanjut</span><span class="arr">→</span></button>
+  </section>
+
+  <!-- ======================= SURAT ======================= -->
+  <section class="screen" id="surat">
+    <p class="sec-eyebrow stagger">Untuk kamu, dari aku</p>
+    <h2 class="sec-title stagger">Sepucuk <em>surat</em> kecil</h2>
+    <div class="letter-paper stagger">
+      <div id="letter-text"></div>
+      <span class="sign">— dengan sayang, selalu</span>
+    </div>
+    <button class="btn-next stagger" id="letterNextBtn" data-next="kue"><span>Lanjut</span><span class="arr">→</span></button>
+  </section>
+
+  <!-- ======================= KUE ======================= -->
+  <section class="screen" id="kue">
+    <p class="cake-hint stagger">klik lilinnya untuk membuat permohonan</p>
+    <div class="cake-wrap stagger" id="cakeWrap">
+      <div class="cake">
+        <svg viewBox="0 0 200 170">
+          <g class="smoke"><ellipse cx="100" cy="25" rx="4" ry="10" fill="#cbb8c5"/></g>
+          <g class="flame">
+            <path d="M100 20 C 94 32, 106 34, 100 46 C 90 40, 92 26, 100 20 Z" fill="#ffd27a"/>
+            <path d="M100 28 C 97 34, 103 35, 100 42 C 95 38, 96 31, 100 28 Z" fill="#ff9a4d"/>
+          </g>
+          <rect x="97" y="44" width="6" height="14" rx="2" fill="#f3e2c9"/>
+          <path d="M40 165 L44 100 Q100 85 156 100 L160 165 Z" fill="#7a3b52"/>
+          <path d="M44 100 Q100 85 156 100 L156 112 Q100 97 44 112 Z" fill="#e8a3bd"/>
+          <path d="M50 130 Q100 118 150 130 L150 140 Q100 128 50 140 Z" fill="#f3c9d6" opacity="0.85"/>
+          <ellipse cx="100" cy="100" rx="56" ry="10" fill="#f7dde6"/>
+          <circle cx="70" cy="98" r="4" fill="#d9b382"/>
+          <circle cx="100" cy="95" r="4" fill="#d9b382"/>
+          <circle cx="130" cy="98" r="4" fill="#d9b382"/>
+        </svg>
+      </div>
+    </div>
+    <h2 class="stagger">Semoga tahun ini penuh <em>kejutan baik</em>,</h2>
+    <p class="wish">dan semoga aku selalu jadi salah satunya. Selamat ulang tahun, aku sayang kamu — hari ini, besok, dan di ulang tahun-ulang tahun berikutnya. 🤍</p>
+    <button class="restart-btn" id="restartBtn">mulai dari awal lagi</button>
+  </section>
+
 </div>
 
-<footer>
-  <div class="credit">Dev by Baday Hamurlloh</div>
-  <small>Website Kelas IX D</small>
-</footer>
-
 <script>
-  // ---------- DATA JADWAL ----------
-  const jadwal = {
-    Senin:  { color:'var(--senin)',  subjects:['Matematika','Bahasa Indonesia','TIK'] },
-    Selasa: { color:'var(--selasa)', subjects:['Pendidikan Pancasila','Prakarya','Bahasa Indramayu','Matematika'] },
-    Rabu:   { color:'var(--rabu)',   subjects:['IPA','Pendidikan Agama Islam','Bahasa Inggris'] },
-    Kamis:  { color:'var(--kamis)',  subjects:['PJOK','Bahasa Inggris','Bahasa Indonesia','IPS'] },
-    Jumat:  { color:'var(--jumat)',  subjects:['Bimbingan Konseling (BK)','IPA','IPS'] }
-  };
+/* =====================================================================
+   BAGIAN YANG PERLU DIEDIT
+   ===================================================================== */
+const NAMA_PACAR = "Sayang"; // ganti dengan nama panggilannya
 
-  const dayTitle = document.getElementById('dayTitle');
-  const dayList = document.getElementById('dayList');
-  const notebookPage = document.getElementById('notebookPage');
-
-  function renderDay(day){
-    const data = jadwal[day];
-    dayTitle.textContent = day;
-    notebookPage.style.setProperty('--dayColor', data.color);
-    dayList.innerHTML = data.subjects.map(s => `<li>${s}</li>`).join('');
-  }
-  renderDay('Senin');
-
-  document.querySelectorAll('.day-tabs button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.day-tabs button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderDay(btn.dataset.day);
-    });
-  });
-
-  // ---------- MAIN NAV ----------
-  document.querySelectorAll('.tabs-main button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tabs-main button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('section.page').forEach(s => s.classList.remove('visible'));
-      document.getElementById(btn.dataset.target).classList.add('visible');
-    });
-  });
-
-  // ---------- DATA BUKU CERITA ----------
-  const bookColors = ['var(--senin)','var(--selasa)','var(--rabu)','var(--kamis)','var(--jumat)'];
-
-  const books = [
-    {
-      title: "Si Kancil dan Buaya di Sungai",
-      text: `Di tepi hutan yang rimbun, hiduplah seekor kancil kecil yang terkenal cerdik. Suatu hari, kancil ingin sekali menyeberangi sungai besar untuk mencicipi buah-buahan manis di kebun seberang. Namun sungai itu penuh dengan buaya-buaya lapar yang selalu mengintai mangsa.
-
-Kancil berdiri di tepi sungai sambil berpikir keras. Tiba-tiba ia berteriak lantang, "Wahai para buaya! Raja hutan mengutusku untuk menghitung jumlah kalian semua, karena akan diadakan pesta besar untuk seluruh buaya di sungai ini!"
-
-Mendengar kata "pesta", para buaya pun berebut muncul ke permukaan air. "Hitung aku dulu!" seru salah satu buaya. Kancil tersenyum dalam hati. "Baiklah, agar mudah dihitung, berbarislah kalian dari tepi sini sampai ke seberang sana!"
-
-Buaya-buaya itu pun berbaris rapi membentuk jembatan hidup dari satu tepi sungai ke tepi lainnya. Dengan lincah, kancil melompat dari punggung satu buaya ke buaya lainnya sambil berpura-pura menghitung, "Satu, dua, tiga, empat..." hingga akhirnya ia sampai di seberang sungai dengan selamat.
-
-Begitu kakinya menyentuh daratan, kancil berbalik dan tertawa kecil. "Terima kasih atas jembatannya, teman-teman! Sebenarnya tidak ada pesta apa pun, aku hanya ingin menyeberang sungai." Para buaya pun geram namun tak bisa berbuat apa-apa karena kancil sudah jauh melompat ke kebun buah.
-
-Sejak hari itu, kancil semakin dikenal sebagai hewan paling cerdik di hutan, yang mampu keluar dari kesulitan dengan akal, bukan dengan kekuatan.`
-    },
-    {
-      title: "Kelinci yang Sombong dan Kura-Kura yang Sabar",
-      text: `Di sebuah padang rumput yang luas, hiduplah seekor kelinci yang sangat bangga dengan kecepatan larinya. Ia sering mengejek hewan-hewan lain yang berjalan lambat, termasuk seekor kura-kura yang tenang dan sabar.
-
-"Kau berjalan seperti siput, kura-kura! Bagaimana mungkin kau bisa mengejarku?" ejek kelinci suatu hari. Kura-kura hanya tersenyum kecil. "Kalau begitu, mari kita buktikan dengan lomba lari sampai ke pohon besar di ujung padang," jawabnya tenang.
-
-Semua hewan di padang rumput berkumpul untuk menyaksikan perlombaan itu. Begitu aba-aba dimulai, kelinci melesat secepat kilat, meninggalkan kura-kura yang berjalan pelan-pelan di belakang. Karena merasa sudah sangat unggul, kelinci memutuskan untuk beristirahat sejenak di bawah pohon rindang di tengah jalan. "Kura-kura itu pasti masih jauh di belakang," pikirnya sambil menguap.
-
-Namun karena terlalu nyaman, kelinci pun tertidur pulas. Sementara itu, kura-kura terus melangkah tanpa henti, selangkah demi selangkah, tanpa pernah berhenti untuk beristirahat.
-
-Ketika kelinci terbangun, matahari sudah mulai condong ke barat. Ia terkejut dan segera berlari secepat mungkin menuju garis akhir. Namun sesampainya di sana, ia melihat kura-kura sudah berdiri tenang di bawah pohon besar, disambut sorak-sorai para hewan lainnya.
-
-Kelinci pun tertunduk malu. Ia belajar bahwa kesombongan dan keteledoran bisa mengalahkan bakat sehebat apa pun, sementara kesabaran dan ketekunan selalu membawa hasil yang baik pada akhirnya.`
-    },
-    {
-      title: "Semut yang Rajin dan Belalang yang Malas",
-      text: `Ketika musim panas tiba, seekor semut bekerja keras setiap hari mengumpulkan biji-bijian untuk disimpan di sarangnya. Ia keluar masuk sarang tanpa lelah, membawa bekal makanan sedikit demi sedikit meskipun matahari sangat terik.
-
-Di dekat sana, seekor belalang menghabiskan harinya dengan bernyanyi dan bermain di antara rerumputan. "Untuk apa kau bekerja sekeras itu, semut? Musim panas ini panjang, nikmatilah harimu," kata belalang sambil memetik biola kecil dari tangkai rumput kering.
-
-Semut hanya menjawab singkat, "Musim dingin akan datang, dan aku harus punya cukup makanan untuk bertahan." Belalang tertawa dan kembali bernyanyi, tidak menghiraukan nasihat semut.
-
-Hari demi hari berlalu, musim panas pun berakhir. Angin dingin mulai bertiup dan salju perlahan menutupi padang rumput. Belalang yang tidak memiliki persediaan makanan mulai kelaparan dan kedinginan. Ia berjalan gontai mencari makanan, namun semua ladang telah tertutup salju.
-
-Dengan langkah lemah, belalang mengetuk pintu sarang semut. Semut yang melihat keadaan belalang merasa iba dan membukakan pintu, memberinya sedikit makanan dari hasil kerja kerasnya selama musim panas. "Terima kasih, semut. Sekarang aku mengerti pentingnya bekerja lebih awal," kata belalang dengan penuh sesal.
-
-Sejak saat itu, belalang belajar untuk tidak lagi menunda pekerjaan, dan setiap musim panas berikutnya, ia pun ikut bekerja bersama semut, mempersiapkan hari esok dengan lebih bijaksana.`
-    },
-    {
-      title: "Bawang Merah dan Bawang Putih",
-      text: `Di sebuah desa yang damai, hiduplah seorang gadis bernama Bawang Putih bersama ibu tirinya dan saudara tirinya, Bawang Merah. Sejak ayahnya meninggal dunia, Bawang Putih diperlakukan dengan tidak adil. Ia harus mengerjakan semua pekerjaan rumah, sementara Bawang Merah dan ibunya hanya bersantai sepanjang hari.
-
-Suatu ketika, Bawang Putih diminta mencuci pakaian di sungai. Tanpa sengaja, selendang milik ibu tirinya hanyut terbawa arus. Karena takut dimarahi, Bawang Putih menyusuri sungai untuk mencari selendang tersebut hingga bertemu seorang nenek tua di sebuah gubuk kecil.
-
-Nenek itu bersedia mengembalikan selendang tersebut, namun meminta Bawang Putih untuk membantunya membersihkan rumah terlebih dahulu. Dengan senang hati, Bawang Putih membantu tanpa mengeluh. Sebagai balasan, nenek itu memberinya pilihan antara dua labu, satu besar dan satu kecil. Karena rendah hati, Bawang Putih memilih labu yang kecil.
-
-Sesampainya di rumah, ketika labu itu dibelah, keluarlah emas, perhiasan, dan berbagai harta berharga dari dalamnya. Melihat hal itu, Bawang Merah menjadi iri dan segera pergi ke sungai yang sama, sengaja menghanyutkan selendangnya sendiri agar bisa bertemu nenek tersebut.
-
-Namun karena bersikap kasar dan malas membantu, serta memilih labu yang besar karena keserakahannya, Bawang Merah justru mendapatkan labu berisi ular dan hal-hal buruk saat dibuka di rumah.
-
-Sejak kejadian itu, ibu tiri dan Bawang Merah menyadari kesalahan mereka dan mulai memperlakukan Bawang Putih dengan lebih baik. Mereka pun hidup rukun, belajar bahwa kejujuran dan kerendahan hati selalu membawa berkah.`
-    },
-    {
-      title: "Timun Mas",
-      text: `Di sebuah desa, hiduplah seorang janda tua bernama Mbok Sirni yang sangat mendambakan seorang anak. Suatu malam, seekor raksasa hijau menemuinya dan memberikan biji timun ajaib, dengan syarat bahwa anak yang lahir dari biji itu harus diserahkan kembali kepadanya ketika berusia tujuh belas tahun.
-
-Mbok Sirni menanam biji itu dengan penuh kasih sayang, dan tak lama kemudian tumbuhlah sebutir timun emas yang besar. Ketika dibelah, muncullah seorang bayi perempuan cantik yang diberi nama Timun Mas. Mbok Sirni membesarkannya dengan penuh cinta, namun ia selalu cemas mengingat janjinya kepada raksasa.
-
-Ketika hari yang ditakutkan tiba, raksasa datang untuk menagih janji. Mbok Sirni yang panik segera memberi Timun Mas empat bungkusan ajaib, yaitu biji timun, jarum, garam, dan terasi, lalu menyuruhnya melarikan diri ke hutan.
-
-Sang raksasa mengejar dengan langkah besar. Timun Mas pun menaburkan biji timun yang seketika tumbuh menjadi ladang timun lebat, memperlambat langkah raksasa. Namun raksasa tetap mengejar, sehingga Timun Mas melemparkan jarum yang berubah menjadi hutan bambu berduri tajam.
-
-Raksasa yang terluka tetap mengejar dengan marah. Timun Mas kemudian menaburkan garam yang berubah menjadi lautan luas, namun raksasa tetap mampu berenang melewatinya. Dalam keadaan terdesak, Timun Mas melemparkan terasi yang seketika berubah menjadi rawa lumpur mendidih yang luas.
-
-Raksasa pun terjebak dan tenggelam dalam lumpur panas tersebut. Timun Mas akhirnya selamat dan kembali ke pelukan ibunya. Mereka hidup bahagia dan tenteram, jauh dari ancaman sang raksasa untuk selamanya.`
-    },
-    {
-      title: "Malin Kundang",
-      text: `Di sebuah kampung nelayan, hiduplah seorang anak laki-laki bernama Malin Kundang bersama ibunya yang bekerja keras seorang diri sejak sang ayah meninggal. Meski hidup sederhana, ibunya selalu berusaha memberikan yang terbaik untuk Malin.
-
-Setelah dewasa, Malin memutuskan untuk merantau ke negeri seberang demi mengubah nasib keluarganya. Ibunya melepas kepergiannya dengan berat hati, berharap suatu hari anaknya akan kembali. Bertahun-tahun berlalu, Malin bekerja keras hingga akhirnya berhasil menjadi saudagar kaya raya dan menikahi seorang wanita bangsawan.
-
-Suatu hari, kapal megah milik Malin berlabuh di kampung halamannya. Mendengar kabar tersebut, sang ibu yang sudah menua bergegas menemuinya dengan penuh rindu. Namun karena malu dengan penampilan ibunya yang lusuh di hadapan istri dan para pengawalnya, Malin berpura-pura tidak mengenalinya.
-
-"Wanita tua ini bukan ibuku," ucap Malin dengan angkuh, bahkan menghardik ibunya pergi. Hati sang ibu hancur mendengar penolakan anak yang telah dibesarkannya dengan penuh pengorbanan. Dengan air mata berlinang, ia berdoa kepada Tuhan agar kedurhakaan anaknya mendapat balasan yang setimpal.
-
-Tak lama setelah itu, langit tiba-tiba menjadi gelap, badai besar datang menerjang kapal Malin Kundang. Petir menyambar-nyambar dan ombak mengamuk hebat, menghancurkan kapal beserta seluruh isinya. Malin Kundang perlahan berubah menjadi batu karang, sebagai pengingat atas kedurhakaannya kepada sang ibu.
-
-Hingga kini, batu karang berbentuk tubuh manusia itu masih dapat dijumpai di pesisir pantai, menjadi kisah pengingat bagi setiap anak untuk selalu menghormati dan menyayangi orang tua mereka.`
-    },
-    {
-      title: "Legenda Danau Toba",
-      text: `Dahulu kala, hiduplah seorang petani muda bernama Toba yang tinggal seorang diri di sebuah desa. Suatu hari, ketika sedang memancing, ia mendapatkan seekor ikan emas yang sangat indah. Ajaibnya, ikan itu berubah menjadi seorang wanita cantik jelita.
-
-Wanita itu bersedia menikah dengan Toba, dengan satu syarat: Toba tidak boleh menceritakan asal-usulnya sebagai ikan kepada siapa pun, termasuk kepada anak mereka kelak. Toba pun berjanji dengan sungguh-sungguh, dan mereka hidup bahagia hingga dikaruniai seorang putra bernama Samosir.
-
-Samosir tumbuh menjadi anak yang kurang membantu orang tuanya dan sering merasa lapar tanpa mau bersabar. Suatu hari, ibunya meminta Samosir mengantarkan makanan kepada ayahnya di ladang. Namun di tengah jalan, Samosir malah memakan seluruh makanan tersebut karena rasa laparnya.
-
-Ketika mengetahui hal itu, Toba menjadi sangat marah dan tanpa sadar berteriak, "Dasar anak keturunan ikan, tidak tahu bersyukur!" Seketika itu juga, langit mendung, hujan turun sangat deras, dan tanah mulai bergetar hebat. Toba baru menyadari bahwa ia telah melanggar janjinya sendiri.
-
-Air bah pun meluap dengan cepat menenggelamkan seluruh desa. Samosir dikisahkan berubah menjadi sebuah pulau di tengah genangan air yang terus meluas, sementara wilayah yang tenggelam itu kemudian dikenal sebagai Danau Toba, dan pulau di tengahnya diberi nama Pulau Samosir.
-
-Hingga kini, Danau Toba menjadi salah satu danau terindah di Indonesia, menyimpan kisah tentang pentingnya menepati janji dan menjaga kesabaran dalam keluarga.`
-    },
-    {
-      title: "Anak Gembala dan Serigala",
-      text: `Di sebuah desa kecil di kaki bukit, tinggallah seorang anak gembala yang bertugas menjaga kawanan domba milik warga desa setiap hari. Karena merasa bosan menjaga domba seorang diri di padang rumput, ia sering mencari cara untuk menghibur dirinya sendiri.
-
-Suatu hari, ia berteriak sekuat tenaga, "Serigala! Serigala! Tolong, ada serigala menyerang domba-dombaku!" Mendengar teriakan itu, para warga desa bergegas berlari membawa tongkat dan peralatan untuk menolongnya. Namun setibanya di padang rumput, mereka tidak menemukan serigala sama sekali. Anak gembala itu tertawa terbahak-bahak melihat warga yang kelelahan berlari sia-sia.
-
-Keesokan harinya, anak gembala mengulangi kejahilannya. "Serigala datang lagi! Tolong aku!" teriaknya lagi. Warga desa yang masih peduli kembali berlari untuk menolong, namun sekali lagi mereka hanya menemukan anak gembala yang tertawa puas atas leluconnya.
-
-Para warga mulai merasa kesal dan tidak lagi mempercayai teriakannya. Beberapa hari kemudian, seekor serigala sungguhan benar-benar muncul dan mulai menyerang kawanan domba. Anak gembala berteriak sekuat mungkin meminta pertolongan, namun kali ini tidak ada satu pun warga yang datang karena mengira ia hanya bercanda seperti sebelumnya.
-
-Akibatnya, banyak domba yang hilang dan terluka karena serangan serigala tersebut. Anak gembala pun menyesal atas kebohongan yang telah ia lakukan berulang kali. Ia belajar bahwa kejujuran sangat penting untuk dijaga, karena kebohongan yang terus diulang pada akhirnya akan membuat orang lain tidak lagi percaya, bahkan di saat pertolongan benar-benar dibutuhkan.`
-    },
-    {
-      title: "Semut dan Merpati yang Saling Menolong",
-      text: `Di tepi sungai yang jernih, hiduplah seekor semut kecil yang sedang berjalan mencari makanan untuk sarangnya. Karena terlalu asyik mencari remah roti, ia tidak menyadari bahwa dirinya berjalan terlalu dekat dengan tepi sungai hingga akhirnya terpeleset dan jatuh ke dalam air.
-
-Arus sungai yang cukup deras membuat semut kesulitan untuk berenang kembali ke tepian. Ia berusaha sekuat tenaga, namun tubuhnya yang kecil membuatnya semakin terbawa arus. Untunglah, seekor burung merpati yang bertengger di ranting pohon dekat sungai melihat kejadian tersebut.
-
-Merpati segera memetik sehelai daun kering dan menjatuhkannya tepat di dekat semut. Dengan sisa tenaga yang ada, semut naik ke atas daun tersebut dan mengapung dengan aman hingga terdampar di tepi sungai. Semut pun mengucapkan terima kasih yang tulus kepada merpati atas pertolongannya.
-
-Beberapa waktu kemudian, seorang pemburu datang membawa jaring dan bersiap menangkap merpati yang sedang beristirahat di dahan pohon. Semut yang kebetulan lewat di dekat kaki pemburu menyadari bahaya tersebut. Tanpa ragu, semut segera menggigit tumit pemburu itu sekuat mungkin.
-
-Pemburu itu terkejut kesakitan dan tanpa sengaja menjatuhkan jaringnya, sehingga merpati pun terbang menjauh dengan selamat sebelum sempat tertangkap. Merpati sangat berterima kasih kepada semut yang telah membalas kebaikannya.
-
-Sejak hari itu, semut dan merpati menjadi sahabat yang saling menjaga. Kisah mereka mengajarkan bahwa kebaikan sekecil apa pun yang kita berikan kepada orang lain, suatu saat akan kembali kepada diri kita sendiri.`
-    },
-    {
-      title: "Kera dan Kura-Kura",
-      text: `Di tepi hutan, hiduplah seekor kera dan seekor kura-kura yang bersahabat baik. Suatu hari, mereka menemukan sebatang pohon pisang hanyut di sungai. Karena tidak ingin berebut, mereka sepakat membagi pohon tersebut menjadi dua bagian: kera mendapatkan bagian atas yang berdaun lebat, sedangkan kura-kura mendapatkan bagian bawah berakar.
-
-Kura-kura menanam bagiannya di tanah dengan telaten, menyiraminya setiap hari hingga tumbuh menjadi pohon pisang yang subur dan berbuah lebat. Sementara itu, kera hanya menancapkan bagian atasnya begitu saja tanpa dirawat, sehingga pohon tersebut layu dan mati dalam beberapa hari.
-
-Melihat pohon pisang milik kura-kura berbuah lebat, kera merasa iri. Ia lalu memanjat pohon tersebut tanpa izin dan memakan seluruh buah pisang yang matang, tanpa menyisakan sedikit pun untuk kura-kura yang telah bersusah payah merawatnya sejak awal.
-
-Kura-kura yang mendapati pohonnya sudah gundul merasa sangat sedih dan kecewa dengan sikap kera. Namun, dengan penuh kesabaran, ia mencari cara untuk memberi pelajaran tanpa membalas dengan kekerasan. Ia menanam batang bambu runcing di sekeliling pohon dan bersembunyi menunggu kera datang kembali.
-
-Ketika kera datang lagi untuk mencuri buah pisang di lain waktu, ia terjatuh dari pohon karena tersandung batang bambu yang telah disusun kura-kura, membuatnya terluka dan jera. Kera pun menyadari kesalahannya dan meminta maaf kepada kura-kura atas keserakahan serta ketidakjujurannya selama ini.
-
-Kura-kura yang berhati lapang memaafkan kera, dengan syarat kera mau belajar bekerja keras dan tidak lagi mengambil hak orang lain. Sejak saat itu, keduanya kembali bersahabat, hidup rukun sambil saling mengingatkan pentingnya kejujuran dan kerja keras.`
-    }
-  ,{title:"Cerita Inspiratif 11",text:`Ini adalah cerita inspiratif nomor 11. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 12",text:`Ini adalah cerita inspiratif nomor 12. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 13",text:`Ini adalah cerita inspiratif nomor 13. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 14",text:`Ini adalah cerita inspiratif nomor 14. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 15",text:`Ini adalah cerita inspiratif nomor 15. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 16",text:`Ini adalah cerita inspiratif nomor 16. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 17",text:`Ini adalah cerita inspiratif nomor 17. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 18",text:`Ini adalah cerita inspiratif nomor 18. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 19",text:`Ini adalah cerita inspiratif nomor 19. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 20",text:`Ini adalah cerita inspiratif nomor 20. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 21",text:`Ini adalah cerita inspiratif nomor 21. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 22",text:`Ini adalah cerita inspiratif nomor 22. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 23",text:`Ini adalah cerita inspiratif nomor 23. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 24",text:`Ini adalah cerita inspiratif nomor 24. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 25",text:`Ini adalah cerita inspiratif nomor 25. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 26",text:`Ini adalah cerita inspiratif nomor 26. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 27",text:`Ini adalah cerita inspiratif nomor 27. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 28",text:`Ini adalah cerita inspiratif nomor 28. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 29",text:`Ini adalah cerita inspiratif nomor 29. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
-,{title:"Cerita Inspiratif 30",text:`Ini adalah cerita inspiratif nomor 30. Isi cerita dapat diganti dengan cerita lengkap sesuai kebutuhan kelas IX D.`}
+const QUIZ = [
+  { q: "Makanan favoritku apa coba?", options: ["Mie ayam", "Seblak", "Sushi", "Nasi goreng"], correct: 1 },
+  { q: "Kalau lagi kesal, aku biasanya butuh...", options: ["Dipeluk", "Didiemin dulu", "Dibeliin makanan", "Ditinggal tidur"], correct: 0 },
+  { q: "Warna yang paling sering aku pakai?", options: ["Hitam", "Putih", "Pastel", "Merah"], correct: 0 },
+  { q: "Hal receh yang bikin aku ngakak setiap kali?", options: ["Meme kucing", "Suara aneh kamu", "Jokes garing kamu", "Semuanya"], correct: 3 }
 ];
 
-  const bookshelf = document.getElementById('bookshelf');
-  books.forEach((book, i) => {
-    const div = document.createElement('button');
-    div.type = 'button';
-    div.className = 'book';
-    div.style.background = bookColors[i % bookColors.length];
-    div.innerHTML = `
-      <span class="num">${String(i+1).padStart(2,'0')}</span>
-      <span class="title">${book.title}</span>
-      <span class="hint">Klik untuk membaca →</span>
-    `;
-    div.addEventListener('click', () => openBook(i));
-    bookshelf.appendChild(div);
-  });
+const SURAT = `Halo, ${NAMA_PACAR}.
 
-  const modal = document.getElementById('bookModal');
-  const bookTitleEl = document.getElementById('bookTitle');
-  const bookTextEl = document.getElementById('bookText');
+Aku nggak pandai merangkai kata-kata manis, tapi hari ini biar aku coba.
 
-  function openBook(i){
-    const book = books[i];
-    bookTitleEl.textContent = book.title;
-    bookTextEl.innerHTML = book.text
-      .split('\n\n')
-      .map(p => `<p>${p.trim()}</p>`)
-      .join('');
-    modal.classList.remove('hidden');
-    modal.scrollTop = 0;
+Terima kasih sudah jadi tempat pulang paling nyaman, jadi alasan aku pengen jadi lebih baik setiap hari, dan jadi orang yang selalu bikin hari-hari biasa terasa nggak biasa.
+
+Semoga di usia barumu ini, semua rencana baik kamu dimudahkan, semua rasa capek kamu dibayar lunas, dan semua doa baik yang kamu panjatkan diam-diam, dikabulkan.
+
+Aku ada di sini. Sekarang, nanti, dan seterusnya.`;
+
+/* =====================================================================
+   Tidak perlu diedit di bawah ini
+   ===================================================================== */
+
+document.getElementById('namaTarget').textContent = NAMA_PACAR;
+
+/* ---------- Screen navigation (klik, bukan scroll) ---------- */
+const screenOrder = ['cover','hero','galeri','kuis','surat','kue'];
+let currentScreen = 'cover';
+const navButtons = document.querySelectorAll('#nav-dots button');
+
+function goToScreen(name){
+  if(name === currentScreen) return;
+  const from = document.getElementById(currentScreen);
+  const to = document.getElementById(name);
+  if(!to) return;
+  from.classList.add('leaving');
+  from.classList.remove('active');
+  setTimeout(()=> from.classList.remove('leaving'), 800);
+  to.classList.add('active');
+  currentScreen = name;
+  navButtons.forEach(b=> b.classList.toggle('active', b.dataset.target === name));
+
+  if(name === 'kuis') renderQuiz();
+  if(name === 'surat') startLetterTyping();
+}
+
+navButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=> goToScreen(btn.dataset.target));
+});
+document.querySelectorAll('[data-next]').forEach(btn=>{
+  btn.addEventListener('click', ()=> goToScreen(btn.dataset.next));
+});
+
+/* ---------- Floating hearts ambient ---------- */
+const heartsLayer = document.getElementById('hearts-layer');
+const heartChars = ['♥','❤','🤍','✦'];
+function spawnHeart(){
+  const el = document.createElement('span');
+  el.className = 'heart-particle';
+  el.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+  el.style.left = Math.random()*100 + 'vw';
+  el.style.setProperty('--drift', (Math.random()*80-40) + 'px');
+  const duration = 8 + Math.random()*8;
+  el.style.animationDuration = duration + 's';
+  el.style.fontSize = (12 + Math.random()*16) + 'px';
+  heartsLayer.appendChild(el);
+  setTimeout(()=> el.remove(), duration*1000 + 200);
+}
+setInterval(spawnHeart, 900);
+for(let i=0;i<6;i++) setTimeout(spawnHeart, i*300);
+
+/* ---------- Envelope open ---------- */
+const envelopeWrap = document.getElementById('envelopeWrap');
+envelopeWrap.addEventListener('click', () => {
+  if(envelopeWrap.classList.contains('open')) return;
+  envelopeWrap.classList.add('open');
+  const rect = envelopeWrap.getBoundingClientRect();
+  burstConfetti(rect.left + rect.width/2, rect.top + rect.height*0.3, 60);
+  setTimeout(()=> goToScreen('hero'), 1300);
+});
+
+/* ---------- Quiz logic ---------- */
+let quizIndex = 0;
+let quizScore = 0;
+let quizRendered = false;
+const quizProgress = document.getElementById('quizProgress');
+const quizQuestion = document.getElementById('quizQuestion');
+const quizOptions = document.getElementById('quizOptions');
+const quizFeedback = document.getElementById('quizFeedback');
+const quizCard = document.getElementById('quizCard');
+const quizNextBtn = document.getElementById('quizNextBtn');
+
+QUIZ.forEach(()=>{
+  const dot = document.createElement('span');
+  quizProgress.appendChild(dot);
+});
+
+function renderQuiz(){
+  if(quizRendered) return;
+  quizRendered = true;
+  showQuestion();
+}
+
+function showQuestion(){
+  if(quizIndex >= QUIZ.length){
+    renderQuizResult();
+    return;
   }
+  const item = QUIZ[quizIndex];
+  quizQuestion.textContent = item.q;
+  quizOptions.innerHTML = '';
+  quizFeedback.classList.remove('show');
+  quizFeedback.textContent = '';
+  [...quizProgress.children].forEach((d,i)=> d.classList.toggle('done', i < quizIndex));
 
-  document.getElementById('closeModal').addEventListener('click', () => {
-    modal.classList.add('hidden');
+  item.options.forEach((opt, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', ()=> handleAnswer(idx, item, btn));
+    quizOptions.appendChild(btn);
   });
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.add('hidden');
+}
+
+function handleAnswer(idx, item, btnClicked){
+  const buttons = [...quizOptions.children];
+  buttons.forEach(b=> b.disabled = true);
+  const correct = idx === item.correct;
+  if(correct){
+    quizScore++;
+    btnClicked.classList.add('correct');
+    quizFeedback.textContent = "Bener! kamu emang perhatian ✨";
+  } else {
+    btnClicked.classList.add('wrong');
+    buttons[item.correct].classList.add('correct');
+    quizFeedback.textContent = "Hehe, salah dikit — tapi tetap sayang kok 🤍";
+  }
+  quizFeedback.classList.add('show');
+  setTimeout(()=>{
+    quizIndex++;
+    showQuestion();
+  }, 1400);
+}
+
+function renderQuizResult(){
+  quizProgress.querySelectorAll('span').forEach(d=> d.classList.add('done'));
+  quizQuestion.textContent = '';
+  quizOptions.innerHTML = '';
+  quizFeedback.textContent = '';
+
+  let msg = '';
+  const pct = quizScore / QUIZ.length;
+  if(pct === 1) msg = "Sempurna. Kamu emang paling tau segalanya tentang aku 🤍";
+  else if(pct >= 0.5) msg = "Lumayan! Masih ada PR buat lebih perhatian ke aku, hehe.";
+  else msg = "Yah, kayaknya kita perlu lebih banyak waktu bareng nih 😅";
+
+  const result = document.createElement('div');
+  result.className = 'quiz-result';
+  result.innerHTML = `<p>Skor kamu</p><div class="score">${quizScore} / ${QUIZ.length}</div><p>${msg}</p>`;
+  quizCard.appendChild(result);
+  quizNextBtn.classList.add('show');
+}
+
+/* ---------- Typewriter letter ---------- */
+const letterTarget = document.getElementById('letter-text');
+const letterNextBtn = document.getElementById('letterNextBtn');
+let letterStarted = false;
+
+function startLetterTyping(){
+  if(letterStarted) return;
+  letterStarted = true;
+  typeLetter(SURAT, letterTarget);
+}
+
+function typeLetter(text, el){
+  let i = 0;
+  const cursor = document.createElement('span');
+  cursor.className = 'typewriter-cursor';
+  cursor.textContent = '\u00A0';
+  function step(){
+    if(i <= text.length){
+      el.textContent = text.slice(0, i);
+      el.appendChild(cursor);
+      i++;
+      setTimeout(step, 16);
+    } else {
+      cursor.remove();
+      letterNextBtn.classList.add('show');
+    }
+  }
+  step();
+}
+
+/* ---------- Cake blow ---------- */
+const cakeWrap = document.getElementById('cakeWrap');
+cakeWrap.addEventListener('click', ()=>{
+  if(cakeWrap.classList.contains('blown')) return;
+  cakeWrap.classList.add('blown');
+  const rect = cakeWrap.getBoundingClientRect();
+  burstConfetti(rect.left + rect.width/2, rect.top, 140);
+});
+
+/* ---------- Restart ---------- */
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  envelopeWrap.classList.remove('open');
+  cakeWrap.classList.remove('blown');
+  quizIndex = 0; quizScore = 0; quizRendered = false;
+  quizNextBtn.classList.remove('show');
+  quizCard.querySelector('.quiz-result')?.remove();
+  quizProgress.querySelectorAll('span').forEach(d=> d.classList.remove('done'));
+  letterStarted = false;
+  letterNextBtn.classList.remove('show');
+  letterTarget.textContent = '';
+  goToScreen('cover');
+});
+
+/* ---------- Confetti canvas ---------- */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let confettiParticles = [];
+const confettiColors = ['#e8a3bd','#d9b382','#f3c9d6','#fbf1ea','#c97b84'];
+
+function burstConfetti(x, y, count){
+  for(let i=0;i<count;i++){
+    confettiParticles.push({
+      x, y,
+      vx: (Math.random()-0.5)*8,
+      vy: (Math.random()*-8)-2,
+      size: 4 + Math.random()*5,
+      color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      rotation: Math.random()*360,
+      rotSpeed: (Math.random()-0.5)*10,
+      life: 0,
+      maxLife: 90 + Math.random()*40
+    });
+  }
+  if(!animating) animateConfetti();
+}
+
+let animating = false;
+function animateConfetti(){
+  animating = true;
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+  confettiParticles.forEach(p=>{
+    p.vy += 0.18; p.x += p.vx; p.y += p.vy; p.rotation += p.rotSpeed; p.life++;
+    const alpha = Math.max(0, 1 - p.life/p.maxLife);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI/180);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+    ctx.restore();
   });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') modal.classList.add('hidden');
-  });
+  confettiParticles = confettiParticles.filter(p=> p.life < p.maxLife);
+  if(confettiParticles.length > 0){
+    requestAnimationFrame(animateConfetti);
+  } else {
+    animating = false;
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+  }
+}
 </script>
-
 </body>
-</html>
+            </html> 
